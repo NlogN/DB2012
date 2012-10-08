@@ -1,0 +1,8 @@
+add(ivanov, Иванов, +79210000000)
+add(petrov, Петров)
+add(sidorov)
+add(vasnetsov, Васнецов, +79211234567)
+add(el'yanov, Эльянов, +79217654321)
+delete(ivanov)
+flush
+exit
