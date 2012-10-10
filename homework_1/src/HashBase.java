@@ -3,7 +3,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Collection;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,9 +19,9 @@ import java.util.Collection;
 
 public class HashBase implements Serializable {
 
-    static int DEFAULT_BASE_SIZE = 1000;
-    int baseSize;
-    ArrayList<DBRecord> store;
+    private final static int DEFAULT_BASE_SIZE = 1000;
+    private final int baseSize;
+    private final ArrayList<DBRecord> store;
 
     HashBase() {
         baseSize = DEFAULT_BASE_SIZE;
@@ -32,8 +32,9 @@ public class HashBase implements Serializable {
         this.baseSize = baseSize;
         store = new ArrayList<DBRecord>(baseSize);
         // TO DO: performance trouble
+        String [] nullarr = {};
         for (int i=0; i<baseSize; ++i) {
-            store.add(new DBRecord("null_head_record"));
+            store.add(new DBRecord("null_head_record", nullarr));
         }
     }
 
@@ -70,7 +71,6 @@ public class HashBase implements Serializable {
             record.next = fatherRecord.next.next;
             fatherRecord.next = record;
         }
-        return;
     }
 
     void delete(String id) throws NoSuchAlgorithmException, UnsupportedEncodingException {

@@ -7,13 +7,9 @@ import java.io.Serializable;
  */
 
 public class DBRecord implements Serializable {
-    String id;
-    String[] fields;
+    final String id;
+    private final String[] fields;
     DBRecord next;
-
-    DBRecord(String id) {
-        this.id = id;
-    }
 
     DBRecord(String id, String[] fields) {
         this.id = id;
