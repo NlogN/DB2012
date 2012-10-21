@@ -1,8 +1,11 @@
+package cluster;
+
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 /**
@@ -32,9 +35,9 @@ public class HashBase implements Serializable {
         this.baseSize = baseSize;
         store = new ArrayList<DBRecord>(baseSize);
         // TO DO: performance trouble
-        String [] nullarr = {};
         for (int i=0; i<baseSize; ++i) {
-            store.add(new DBRecord("null_head_record", nullarr));
+            store.add(new DBRecord("null_head_record",
+                    new HashMap<String, String>()));
         }
     }
 
@@ -46,7 +49,7 @@ public class HashBase implements Serializable {
             return;
         }
 
-        int index = hash(record.id);
+        int index = hash(record.id, baseSize);
         DBRecord endListRecord = store.get(index);
         while (endListRecord.next != null)  {
             endListRecord = endListRecord.next;
@@ -82,7 +85,8 @@ public class HashBase implements Serializable {
         fatherRecord.next = fatherRecord.next.next;
     }
 
-    private int hash(String id) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    static int hash(String id, int valueRange) throws
+            NoSuchAlgorithmException, UnsupportedEncodingException {
 
         MessageDigest md = MessageDigest.getInstance("MD5");
         byte[] recordInBytes = id.getBytes("UTF-8");
@@ -93,23 +97,23 @@ public class HashBase implements Serializable {
         for (int i : hashInBytes) {
             result *= 256;
             result += i + 128;
-            result %= baseSize;
+            result %= valueRange;
         }
         return  result;
     }
 
-    /** returns _father_ of element with given id
+    /**
+     *
+     *
+     * @param id unique id of record
+     * @return returns _father_ of element with given id
      * if store has it, otherwise - null
-     *
-     *
-     * @param id
-     * @return
      * @throws NoSuchAlgorithmException
      * @throws UnsupportedEncodingException
      */
 
     private DBRecord find(String id) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        int index = hash(id);
+        int index = hash(id, baseSize);
         DBRecord record = store.get(index);
         while ((record.next != null) && (! record.next.id.equals(id)))  {
             record = record.next;

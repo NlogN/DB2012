@@ -1,6 +1,9 @@
+package cluster;
+
 import junit.framework.TestCase;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 import java.util.zip.DataFormatException;
 
@@ -11,18 +14,19 @@ import java.util.zip.DataFormatException;
  * Package: PACKAGE_NAME
  */
 public class NodeTest extends TestCase {
-    public void testCrud() throws IOException, DataFormatException {
-        Node node = new MasterNode();
+    public void testCrud() throws IOException, DataFormatException, NoSuchAlgorithmException {
+        Cluster cluster = new Cluster(3);
+        Node masterNode = new MasterNode(cluster);
         try (Scanner in = new Scanner("commands_1.txt")) {
             while (in.hasNext()) {
-                String result = node.crud(in.nextLine());
+                String result = masterNode.crud(in.nextLine());
                 System.out.println(result);
             }
         }
         try (Scanner in = new Scanner("commands_2.txt")) {
             while (in.hasNext()) {
-                node.crud(in.nextLine());
-                String result = node.crud(in.nextLine());
+                masterNode.crud(in.nextLine());
+                String result = masterNode.crud(in.nextLine());
                 System.out.println(result);
             }
         }

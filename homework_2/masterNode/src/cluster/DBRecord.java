@@ -1,4 +1,7 @@
+package cluster;
+
 import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -8,24 +11,20 @@ import java.io.Serializable;
 
 public class DBRecord implements Serializable {
     final String id;
-    private final String[] fields;
+    private final HashMap<String, String> fields;
     DBRecord next;
 
-    DBRecord(String id, String[] fields) {
+    DBRecord(String id, HashMap<String, String> fields) {
         this.id = id;
         this.fields = fields;
     }
 
     public String toString() {
-        String result = id;
-        if (fields != null) {
-            for (String field : fields) {
+        String result = "{\"id\":" + id;
+            for (String field : fields.keySet()) {
                 // TO DO: make it more strict
-                if (field != null) {
-                    result += " " + field;
-                }
+                result += ", \"" + field + "\":\"" + fields.get(field);
             }
-        }
         return result;
     }
 
