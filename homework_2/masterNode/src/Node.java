@@ -1,3 +1,5 @@
+import java.util.zip.DataFormatException;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Epifanov Sergey
@@ -15,5 +17,5 @@ public interface Node {
      * For "retrieve" method: record in inner format
      */
 
-    String crud(String parsedCommand);
+    String crud(String parsedCommand) throws DataFormatException;
 }

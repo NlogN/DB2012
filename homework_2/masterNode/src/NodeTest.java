@@ -2,6 +2,7 @@ import junit.framework.TestCase;
 
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.zip.DataFormatException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,7 +11,7 @@ import java.util.Scanner;
  * Package: PACKAGE_NAME
  */
 public class NodeTest extends TestCase {
-    public void testCrud() throws IOException {
+    public void testCrud() throws IOException, DataFormatException {
         Node node = new MasterNode();
         try (Scanner in = new Scanner("commands_1.txt")) {
             while (in.hasNext()) {
