@@ -20,11 +20,12 @@ public class DBRecord implements Serializable {
     }
 
     public String toString() {
-        String result = "{\"id\":" + id;
-            for (String field : fields.keySet()) {
-                // TO DO: make it more strict
-                result += ", \"" + field + "\":\"" + fields.get(field);
+        String result = "id=" + fields.get("id");
+        for (String field : fields.keySet()) {
+            if (!field.equals("id") && !field.equals("method")) {
+                result += ", " + field + "=" + fields.get(field);
             }
+        }
         return result;
     }
 

@@ -16,7 +16,7 @@ import java.util.zip.DataFormatException;
 public class NodeTest extends TestCase {
     public void testCrud() throws IOException, DataFormatException, NoSuchAlgorithmException {
         Cluster cluster = new Cluster(3);
-        Node masterNode = new MasterNode(cluster);
+        Node masterNode = new MasterNode(cluster, 3);
         try (Scanner in = new Scanner("commands_1.txt")) {
             while (in.hasNext()) {
                 String result = masterNode.crud(in.nextLine());

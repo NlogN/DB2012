@@ -29,12 +29,18 @@ public class HashBase implements Serializable {
     HashBase() {
         baseSize = DEFAULT_BASE_SIZE;
         store = new ArrayList<DBRecord>(baseSize);
+        initStore();
     }
 
     HashBase(int baseSize) {
         this.baseSize = baseSize;
         store = new ArrayList<DBRecord>(baseSize);
+        initStore();
         // TO DO: performance trouble
+
+    }
+
+    void initStore() {
         for (int i=0; i<baseSize; ++i) {
             store.add(new DBRecord("null_head_record",
                     new HashMap<String, String>()));

@@ -1,0 +1,8 @@
+method=create, id=marina, tel=+72921
+method=retrieve, id=marina
+method=create, id=ivanov, name=Иванов, tel=+79210000000
+method=create, id=petrov, name=Петров
+method=create, id=sidorov
+method=create, id=vasnetsov, name=Васнецов, tel=+79211234567
+method=create, id=el'yanov, name=Эльянов, tel=+79217654321
+method=delete, id=ivanov

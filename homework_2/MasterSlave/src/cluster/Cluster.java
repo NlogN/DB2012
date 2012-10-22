@@ -12,8 +12,8 @@ public class Cluster {
     private final SlaveNode [] slaveNodes;
 
     public Cluster(int slavesCount) {
-        this.masterNode = new MasterNode(this);
         this.slavesCount = slavesCount;
+        this.masterNode = new MasterNode(this, slavesCount);
         slaveNodes = new SlaveNode[slavesCount];
         for (int i = 0; i < slavesCount; i++) {
             slaveNodes[i] = new SlaveNode();

@@ -13,11 +13,11 @@ import java.security.NoSuchAlgorithmException;
 public class MasterNode extends AbstractNode {
 
     private final int slavesCount;
-    private final Cluster myClaster;
+    private final Cluster myCluster;
 
-    MasterNode(Cluster cluster) {
-        this.slavesCount = cluster.getSlavesCount();
-        this.myClaster = cluster;
+    MasterNode(Cluster cluster, int slavesCount) {
+        this.slavesCount = slavesCount;
+        this.myCluster = cluster;
     }
 
     @Override
@@ -38,8 +38,7 @@ public class MasterNode extends AbstractNode {
 
     private SlaveNode getNode(String recordId)
             throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        Cluster cluster;
         int slaveNumber = HashBase.hash(recordId, slavesCount);
-        return myClaster.getSlave(slaveNumber);
+        return myCluster.getSlave(slaveNumber);
     }
 }

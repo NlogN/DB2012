@@ -78,23 +78,22 @@ public abstract class AbstractNode implements Node {
     private HashMap<String, Object> commandToHashMap(String parsedCommand)
             throws DataFormatException {
 
-        StringTokenizer tokens = new StringTokenizer(parsedCommand, " ,()");
-
-        // read operation
+        StringTokenizer tokens = new StringTokenizer(parsedCommand, " ,");
         HashMap<String, String> record = new HashMap();
-        // read other fields
         while (tokens.hasMoreTokens()) {
-            String [] key_value =
-                    tokens.nextToken().split("=", 2);
+            String [] key_value = tokens.nextToken().split("=");
             if (key_value.length == 2) {
                 record.put(key_value[0], key_value[1]);
             } else {
-                throw new DataFormatException("формат данных должен быть " +
-                        "вида add(id=ivanov, name=Иванов, " +
-                        "tel=+7921AAABBCC)");
+                throw new DataFormatException("Data format must be like:\n" +
+                        "method=create, id=ivanov, name=Иванов, " +
+                        "tel=+7921AAABBCC\n" + "or\n" +
+                        "method=retrieve, id=ivanov\n" +
+                        "but there is token: " + key_value[0]);
             }
         }
 
+        // make record
         HashMap<String, Object> result = new HashMap();
         result.put("method", record.get("method"));
         result.put("value", record);
