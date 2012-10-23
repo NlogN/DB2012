@@ -33,29 +33,49 @@ public class Server implements HttpHandler {
     @Override
     public void handle(HttpExchange exc) throws IOException {
 
-        InputStreamReader isr =  new InputStreamReader(exc.getRequestBody());
+        InputStreamReader isr =  new InputStreamReader(exc.getRequestBody(),"utf-8");
         BufferedReader br = new BufferedReader(isr);
         String value = br.readLine();
-//        String[] commands = value.split("=");
+        value = replaser(value);
+        String[] commands = value.split("&");
+
+        for (int i = 0; i < commands.length; i++) {
+            String command = commands[i];
+            if (command.charAt(command.length() - 1) == '=') {
+                commands[i] = command.substring(0, command.length() - 1);
+            }
+        }
 
         exc.sendResponseHeaders(200, 0);
         PrintWriter out = new PrintWriter(exc.getResponseBody());
-        out.println(value);
-//        for (String command:commands){
-//            out.println(command);
-//        }
-//        Cluster cluster = new Cluster(3);
-//        try {
-//
-//            cluster.masterNode.crud(value.substring(0,value.length()-1));
-//        } catch (DataFormatException e) {
-//            e.printStackTrace();
-//        } catch (NoSuchAlgorithmException e) {
-//            e.printStackTrace();
-//        }
+
+        for (String command:commands){
+            out.println(command);
+        }
+        Cluster cluster = new Cluster(3);
+        try {
+            for (String command:commands){
+                System.out.println(cluster.masterNode.crud(command));
+            }
+
+        } catch (DataFormatException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        cluster.masterNode.print();
 
         out.close();
         exc.close();
+    }
+
+    public String replaser(String s){
+        s = s.replaceAll("%3D","=");
+        s = s.replaceAll("%2C",",");
+        s = s.replaceAll("%2B","+");
+       // s = s.replaceAll(",+",", ");
+        return s;
     }
 
 }

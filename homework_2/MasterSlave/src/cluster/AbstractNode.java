@@ -29,6 +29,7 @@ public abstract class AbstractNode implements Node {
     public String crud(String parsedCommand)
             throws DataFormatException,
             NoSuchAlgorithmException, UnsupportedEncodingException {
+       // System.out.println("parsedCommand = "+parsedCommand);
         HashMap<String, Object> request = commandToHashMap(parsedCommand);
         String operation = (String) request.get("method");
         HashMap<String, String> record =
@@ -78,7 +79,7 @@ public abstract class AbstractNode implements Node {
     private HashMap<String, Object> commandToHashMap(String parsedCommand)
             throws DataFormatException {
 
-        StringTokenizer tokens = new StringTokenizer(parsedCommand, " ,");
+        StringTokenizer tokens = new StringTokenizer(parsedCommand, ",");
         HashMap<String, String> record = new HashMap();
         while (tokens.hasMoreTokens()) {
             String [] key_value = tokens.nextToken().split("=");
@@ -99,5 +100,9 @@ public abstract class AbstractNode implements Node {
         result.put("value", record);
         result.put("id", record.get("id")); // TO DO: record.get("id") exists?
         return result;
+    }
+
+    public void print(){
+        hashBase.print();
     }
 }

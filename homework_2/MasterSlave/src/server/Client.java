@@ -11,6 +11,7 @@ import org.apache.http.message.BasicNameValuePair;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * User: ilya
@@ -25,13 +26,14 @@ public class Client {
         HttpPost post = new HttpPost("http://127.0.0.1:8000/");
         try {
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-            nameValuePairs.add(new BasicNameValuePair("method=create, id=marry, tel=+72921", ""));
 
 
-//            Scanner in = new Scanner(new FileReader("test_1.txt"));
-//            while (in.hasNext()) {
-//                nameValuePairs.add(new BasicNameValuePair(in.nextLine(), ""));
-//            }
+           Scanner in = new Scanner(new FileReader("test_1.txt"));
+           while (in.hasNext()) {
+               String line = in.nextLine();
+               line=line.replaceAll(" ","");
+               nameValuePairs.add(new BasicNameValuePair(line, ""));
+           }
 
             post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
