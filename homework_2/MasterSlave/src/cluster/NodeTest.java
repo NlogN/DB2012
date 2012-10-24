@@ -26,7 +26,6 @@ public class NodeTest extends TestCase {
         }
         try (Scanner in = new Scanner(new FileReader("test_2.txt"))) {
             while (in.hasNext()) {
-                masterNode.crud(in.nextLine());
                 String result = masterNode.crud(in.nextLine());
                 System.out.println(result);
             }
