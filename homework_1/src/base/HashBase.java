@@ -1,3 +1,5 @@
+package base;
+
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -23,12 +25,12 @@ public class HashBase implements Serializable {
     private final int baseSize;
     private final ArrayList<DBRecord> store;
 
-    HashBase() {
+    public HashBase() {
         baseSize = DEFAULT_BASE_SIZE;
         store = new ArrayList<DBRecord>(baseSize);
     }
 
-    HashBase(int baseSize) {
+    public HashBase(int baseSize) {
         this.baseSize = baseSize;
         store = new ArrayList<DBRecord>(baseSize);
         // TO DO: performance trouble
