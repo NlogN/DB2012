@@ -25,7 +25,7 @@ public class ConsoleApp {
         while (stringTokenizer.hasMoreTokens()) {
             fields[i++] = stringTokenizer.nextToken();
         }
-
+        System.out.println(fields[1]);
         // make record
         DBRecord record;
         record = new DBRecord(id, fields);
@@ -40,7 +40,7 @@ public class ConsoleApp {
                 break;
             case "get":
                 out.println(base.retrieve(id));
-                System.out.println(base.retrieve(id) + "\n");
+              //  System.out.println(base.retrieve(id) + "\n");
                 break;
             case "delete":
                 base.delete(id);

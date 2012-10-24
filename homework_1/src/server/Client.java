@@ -21,10 +21,14 @@ import java.util.Scanner;
 
 
 public class Client {
-    public static void main(String[] args) throws FileNotFoundException {
+
+    public static void main(String[] args) throws IOException {
+        int port = 8000;
+
+        Cluster cluster = new Cluster(port);
 
         HttpClient client = new DefaultHttpClient();
-        HttpPost post = new HttpPost("http://127.0.0.1:8000/");
+        HttpPost post = new HttpPost("http://127.0.0.1:"+port+"/");
         try {
 
             Scanner in = new Scanner(System.in);
@@ -32,8 +36,10 @@ public class Client {
                     String input = in.nextLine();
                     if(input.equals("esk")){
                         System.out.println("end.");
-                        return;
+                        break;
                     } else{
+                        input=input.replaceAll(" ","");
+
                         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
                         nameValuePairs.add(new BasicNameValuePair(input, ""));
                         post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -52,5 +58,8 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        cluster.stop();
+
     }
 }

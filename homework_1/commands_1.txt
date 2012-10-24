@@ -1,8 +1,9 @@
 add(ivanov, Ivanov, +79210000000)
 add(petrov, Petrov)
 add(sidorov, 12312)
+get(sidorov)
 delete(ivanov)
 flush
 update(sidorov,+7921329439)
-get(sidorov)
+
 exit

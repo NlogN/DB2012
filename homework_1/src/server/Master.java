@@ -1,26 +1,36 @@
 package server;
 
 import base.ConsoleApp;
-import base.HashBase;
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
-
-
+import com.sun.net.httpserver.HttpServer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetSocketAddress;
 import java.security.NoSuchAlgorithmException;
 
 /**
  * User: ilya
- * Date: 21.10.12
+ * Date: 25.10.12
  */
+public class Master extends Server{
+    HttpServer server;
+    int port;
 
-public class Server implements HttpHandler {
-    HashBase base = new HashBase(2);
+    public Master(int port) throws IOException {
+        this.port = port;
+        server = HttpServer.create(new InetSocketAddress(port), 10);
+        server.createContext("/", new Server());
+        server.start();
+        System.out.println("server on port " + port + " started");
+    }
 
+    public void stop() {
+        server.stop(0);
+        System.out.println("server on port " + port + " stoped");
+    }
 
     @Override
     public void handle(HttpExchange exc) throws IOException {
@@ -57,16 +67,4 @@ public class Server implements HttpHandler {
         out.close();
         exc.close();
     }
-
-    public String replaser(String s){
-        s = s.replaceAll("%3D","=");
-        s = s.replaceAll("%2C",",");
-        s = s.replaceAll("%2B","+");
-        s = s.replaceAll("%28","(");
-        s = s.replaceAll("%29",")");
-        return s;
-    }
-
-
-
 }
