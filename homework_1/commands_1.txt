@@ -1,8 +1,8 @@
-add(ivanov, Иванов, +79210000000)
-add(petrov, Петров)
-add(sidorov)
-add(vasnetsov, Васнецов, +79211234567)
-add(el'yanov, Эльянов, +79217654321)
+add(ivanov, Ivanov, +79210000000)
+add(petrov, Petrov)
+add(sidorov, 12312)
 delete(ivanov)
 flush
+update(sidorov,+7921329439)
+get(sidorov)
 exit
