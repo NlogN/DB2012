@@ -21,38 +21,41 @@ import java.util.Scanner;
 
 
 public class Client {
+    public static String defaultHttp = "http://127.0.0.1:";
+
 
     public static void main(String[] args) throws IOException {
+
         int port = 8000;
 
         Cluster cluster = new Cluster(port);
 
         HttpClient client = new DefaultHttpClient();
-        HttpPost post = new HttpPost("http://127.0.0.1:"+port+"/");
+        HttpPost post = new HttpPost(defaultHttp + port + "/");
         try {
 
             Scanner in = new Scanner(System.in);
-                while (in.hasNext()) {
-                    String input = in.nextLine();
-                    if(input.equals("esk")){
-                        System.out.println("end.");
-                        break;
-                    } else{
-                        input=input.replaceAll(" ","");
+            while (in.hasNext()) {
+                String input = in.nextLine();
+                if (input.equals("esk")) {
+                    System.out.println("end.");
+                    break;
+                } else {
+                    input = input.replaceAll(" ", "");
 
-                        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-                        nameValuePairs.add(new BasicNameValuePair(input, ""));
-                        post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                    List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+                    nameValuePairs.add(new BasicNameValuePair(input, ""));
+                    post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
-                        HttpResponse response = client.execute(post);
-                        BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-                        String line = "";
-                        while ((line = rd.readLine()) != null) {
-                            System.out.println(line);
-                        }
+                    HttpResponse response = client.execute(post);
+                    BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                    String line = "";
+                    while ((line = rd.readLine()) != null) {
+                        System.out.println(line);
                     }
-
                 }
+
+            }
 
 
         } catch (IOException e) {

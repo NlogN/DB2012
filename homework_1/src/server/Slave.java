@@ -18,11 +18,11 @@ public class Slave extends Server {
         server = HttpServer.create(new InetSocketAddress(port), 10);
         server.createContext("/", new Server());
         server.start();
-        System.out.println("server on port " + port + " started");
+      //  System.out.println("server on port " + port + " started");
     }
 
     public void stop() {
         server.stop(0);
-        System.out.println("server on port " + port + " stoped");
+      //  System.out.println("server on port " + port + " stoped");
     }
 }

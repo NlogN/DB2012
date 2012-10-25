@@ -47,9 +47,9 @@ public class Server implements HttpHandler {
             try {
                 ConsoleApp.perform(command, base, out);
             } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                e.printStackTrace();
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                e.printStackTrace();
             }
         }
 

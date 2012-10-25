@@ -119,4 +119,10 @@ public class HashBase implements Serializable {
         }
         return (record.next != null ? record : null);
     }
+
+    public void print(){
+        for (DBRecord dbRecord:store){
+            System.out.println(dbRecord.toString());
+        }
+    }
 }

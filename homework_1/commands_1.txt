@@ -5,5 +5,5 @@ get(sidorov)
 delete(ivanov)
 flush
 update(sidorov,+7921329439)
-
+ delete(sidorov)
 exit

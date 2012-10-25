@@ -25,7 +25,8 @@ public class ConsoleApp {
         while (stringTokenizer.hasMoreTokens()) {
             fields[i++] = stringTokenizer.nextToken();
         }
-        System.out.println(fields[1]);
+
+
         // make record
         DBRecord record;
         record = new DBRecord(id, fields);
