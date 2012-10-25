@@ -30,4 +30,9 @@ public class Cluster {
             slave.stop();
         }
     }
+
+    public void mstop() {
+        master.stop();
+        System.out.println("Master stoped");
+    }
 }

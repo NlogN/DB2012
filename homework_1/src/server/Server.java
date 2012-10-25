@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 /**
  * User: ilya
@@ -41,6 +42,7 @@ public class Server implements HttpHandler {
 
         exc.sendResponseHeaders(200, 0);
         PrintWriter out = new PrintWriter(exc.getResponseBody());
+
 
         for (String command:commands){
 

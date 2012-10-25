@@ -26,7 +26,7 @@ public class ConsoleApp {
             fields[i++] = stringTokenizer.nextToken();
         }
 
-
+       // System.out.println("input = "+input);
         // make record
         DBRecord record;
         record = new DBRecord(id, fields);
