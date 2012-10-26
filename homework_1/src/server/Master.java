@@ -72,7 +72,7 @@ public class Master extends Server {
                     e.printStackTrace();
                 }
 
-                if(!command.substring(0,3).equals("get")){
+                if (!command.substring(0, 3).equals("get")) {
                     updateSlave(command);
                 }
 
@@ -86,30 +86,27 @@ public class Master extends Server {
 
 
         public void updateSlave(String command) throws IOException {
-            int ind1 = command.indexOf("(");
-            int ind2 = command.indexOf(",");
-            if (ind1 < ind2) {
-                HttpClient client1 = new DefaultHttpClient();
-                String key = command.substring(ind1 + 1, ind2);
-                int slavePort = Client.getSlavePort(port,key);
 
-                HttpPost post = new HttpPost(Client.defaultHttp + slavePort + "/");
-                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-                nameValuePairs.add(new BasicNameValuePair(command, ""));
-                post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            HttpClient client1 = new DefaultHttpClient();
 
-                //System.out.println(command + "to slave");
+            int slavePort = Client.getSlavePort(command);
 
-                client1.execute(post);
-              //  HttpResponse response = client.execute(post);
+            HttpPost post = new HttpPost(Client.defaultHttp + slavePort + "/");
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+            nameValuePairs.add(new BasicNameValuePair(command, ""));
+            post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+            //System.out.println(command + "to slave");
+
+            client1.execute(post);
+            //  HttpResponse response = client.execute(post);
 //                BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 //                String line = "";
 //                while ((line = rd.readLine()) != null) {
 //                    System.out.println(line);
 //                }
 
-            }
-        }
 
+        }
     }
 }
