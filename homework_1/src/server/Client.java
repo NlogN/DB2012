@@ -10,7 +10,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.*;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -75,14 +74,14 @@ public class Client {
     }
 
     static void balancer(String command, HttpPost post) throws IOException {
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+        List<NameValuePair> nameValuePairs = new ArrayList<>(1);
         nameValuePairs.add(new BasicNameValuePair(command, ""));
 
         try {
             post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             HttpResponse response = client.execute(post);
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-            String line = "";
+            String line;
             while ((line = rd.readLine()) != null) {
                 System.out.println(line);
             }
@@ -95,7 +94,7 @@ public class Client {
 
                 HttpResponse response = client.execute(post1);
                 BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-                String line = "";
+                String line;
                 while ((line = rd.readLine()) != null) {
                     System.out.println(line);
                 }
@@ -109,13 +108,11 @@ public class Client {
 
     public static int getSlavePort(String command) {
         int hash = hash(command);
-        int slavePort = getMasterPort(command)+ 1 + (hash % 2);
-        return slavePort;
+        return getMasterPort(command)+ 1 + (hash % 2);
     }
 
     public static int getMasterPort(String command) {
-        int hash = hash(command);
-        return mastersPorts[hash % 3];
+        return mastersPorts[getMasterPortInd(command)];
     }
 
     public static int getMasterPortInd(String command) {

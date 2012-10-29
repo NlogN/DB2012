@@ -4,7 +4,6 @@ import base.ConsoleApp;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -23,7 +22,6 @@ import java.util.List;
  * Date: 25.10.12
  */
 public class Master extends Server {
-    HttpClient client = new DefaultHttpClient();
     HttpServer server;
     int port;
 
@@ -65,7 +63,7 @@ public class Master extends Server {
 
             for (String command : commands) {
                 try {
-                    ConsoleApp.perform(command, base, out);
+                    base = ConsoleApp.perform(command, base, out);
                 } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {
@@ -92,7 +90,7 @@ public class Master extends Server {
             int slavePort = Client.getSlavePort(command);
 
             HttpPost post = new HttpPost(Client.defaultHttp + slavePort + "/");
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+            List<NameValuePair> nameValuePairs = new ArrayList<>(1);
             nameValuePairs.add(new BasicNameValuePair(command, ""));
             post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 

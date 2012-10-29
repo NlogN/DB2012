@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 /**
  * User: ilya
@@ -47,10 +46,8 @@ public class Server implements HttpHandler {
         for (String command:commands){
 
             try {
-                ConsoleApp.perform(command, base, out);
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+                base = ConsoleApp.perform(command, base, out);
+            } catch (NoSuchAlgorithmException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
@@ -68,7 +65,4 @@ public class Server implements HttpHandler {
         s = s.replaceAll("%29",")");
         return s;
     }
-
-
-
 }

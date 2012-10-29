@@ -42,7 +42,7 @@ public abstract class AbstractNode implements Node {
     abstract String performOperation(String operation, DBRecord dbRecord)
             throws NoSuchAlgorithmException, UnsupportedEncodingException;
 
-    String performOperationKernel(String operation, DBRecord dbRecord)
+    String pop(String operation, DBRecord dbRecord)
             throws NoSuchAlgorithmException, UnsupportedEncodingException {
         DBRecord result = null;
         switch(operation) {
@@ -78,8 +78,9 @@ public abstract class AbstractNode implements Node {
 
     private HashMap<String, Object> commandToHashMap(String parsedCommand)
             throws DataFormatException {
-        StringTokenizer tokens = new StringTokenizer(parsedCommand, ", ");
-        HashMap<String, String> record = new HashMap<>();
+
+        StringTokenizer tokens = new StringTokenizer(parsedCommand, ",");
+        HashMap<String, String> record = new HashMap();
         while (tokens.hasMoreTokens()) {
             String [] key_value = tokens.nextToken().split("=");
             if (key_value.length == 2) {
@@ -94,7 +95,7 @@ public abstract class AbstractNode implements Node {
         }
 
         // make record
-        HashMap<String, Object> result = new HashMap<>();
+        HashMap<String, Object> result = new HashMap();
         result.put("method", record.get("method"));
         result.put("value", record);
         result.put("id", record.get("id")); // TO DO: record.get("id") exists?

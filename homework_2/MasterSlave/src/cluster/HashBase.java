@@ -28,13 +28,13 @@ public class HashBase implements Serializable {
 
     HashBase() {
         baseSize = DEFAULT_BASE_SIZE;
-        store = new ArrayList<>(baseSize);
+        store = new ArrayList<DBRecord>(baseSize);
         initStore();
     }
 
     HashBase(int baseSize) {
         this.baseSize = baseSize;
-        store = new ArrayList<>(baseSize);
+        store = new ArrayList<DBRecord>(baseSize);
         initStore();
         // TO DO: performance trouble
 

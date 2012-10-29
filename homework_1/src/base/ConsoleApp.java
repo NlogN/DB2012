@@ -2,7 +2,6 @@ package base;
 
 import java.io.*;
 import java.security.NoSuchAlgorithmException;
-import java.util.Scanner;
 import java.util.StringTokenizer;
 
 
@@ -11,7 +10,8 @@ public class ConsoleApp {
     final private static String [] permittedOperations =
             {"add", "update", "delete", "get", "flush", "load", "exit"};
 
-    public static void perform(String input, HashBase base, PrintWriter out) throws NoSuchAlgorithmException, IOException, ClassNotFoundException {
+    public static HashBase perform(String input, HashBase base,
+                            PrintWriter out) throws NoSuchAlgorithmException, IOException, ClassNotFoundException {
         StringTokenizer stringTokenizer = new StringTokenizer(input, " ,()");
 
         // read operation and record id (if present)
@@ -63,7 +63,7 @@ public class ConsoleApp {
                 break;
             case "exit":
                 System.out.println("end.");
-                return;
+                return base;
             default:
                 out.print("Unknown command. Known commands are: ");
                 for (String command : permittedOperations) {
@@ -72,6 +72,7 @@ public class ConsoleApp {
                 System.out.println();
                 break;
         }
+        return base;
     }
 
 //    public static void main (String [] args) throws IOException, ClassNotFoundException {
