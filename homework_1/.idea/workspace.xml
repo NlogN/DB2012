@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="78b73b9b-857d-4870-9abd-b89d87211980" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
+    <list id="40f2e529-e526-459c-a51a-42b400463ae3" name="another projects" comment="">
       <change type="DELETED" beforePath="$PROJECT_DIR$/../git_proj/homework_1/commands_1.txt" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/../git_proj/homework_1/commands_2.txt" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/../git_proj/homework_1/src/base/ConsoleApp.java" afterPath="" />
@@ -13,8 +16,6 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/../git_proj/homework_1/src/server/Server.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/../git_proj/homework_1/src/server/Slave.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.idea/workspace.xml" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../homework_2/MasterSlave/MasterSlave.iml" afterPath="$PROJECT_DIR$/../homework_2/MasterSlave/MasterSlave.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../homework_2/MasterSlave/src/cluster/AbstractNode.java" afterPath="$PROJECT_DIR$/../homework_2/MasterSlave/src/cluster/AbstractNode.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../homework_2/MasterSlave/src/cluster/HashBase.java" afterPath="$PROJECT_DIR$/../homework_2/MasterSlave/src/cluster/HashBase.java" />
@@ -78,22 +79,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Client.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Client.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/server/Client.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="8" selection-start="62" selection-end="62" vertical-scroll-proportion="0.0">
+            <state line="2" column="17" selection-start="34" selection-end="34" vertical-scroll-proportion="0.05292479">
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="NodeTest.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../homework_2/MasterSlave/src/cluster/NodeTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="7" selection-start="25" selection-end="25" vertical-scroll-proportion="0.10584958">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -476,6 +466,7 @@
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="78b73b9b-857d-4870-9abd-b89d87211980" name="Default" comment="" />
+      <changelist id="40f2e529-e526-459c-a51a-42b400463ae3" name="another projects" comment="" />
       <created>1347882830497</created>
       <updated>1347882830497</updated>
     </task>
@@ -487,7 +478,12 @@
       <created>1351511138881</created>
       <updated>1351511138881</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Теперь можно сохранять базу на диск (локально на каждой ноде) командой flush и &#10;восстанавливать состояние командой load, как было изначально в первом дз.&#10;">
+      <created>1351512423390</created>
+      <updated>1351512423390</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
+    <option name="trackContextForNewChangelist" value="false" />
     <servers />
   </component>
   <component name="TodoView" selected-index="3">
@@ -645,19 +641,19 @@
         <state line="2" column="0" selection-start="17" selection-end="17" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/server/Client.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="8" selection-start="62" selection-end="62" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../homework_2/MasterSlave/src/cluster/NodeTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="2" column="7" selection-start="25" selection-end="25" vertical-scroll-proportion="0.10584958">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/server/Client.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="17" selection-start="34" selection-end="34" vertical-scroll-proportion="0.05292479">
+          <folding />
         </state>
       </provider>
     </entry>

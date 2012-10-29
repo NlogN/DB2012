@@ -14,6 +14,6 @@ public class SlaveNode extends AbstractNode {
     @Override
     String performOperation(String operation, DBRecord dbRecord)
             throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        return pop(operation, dbRecord);
+        return performOperationKernel(operation, dbRecord);
     }
 }

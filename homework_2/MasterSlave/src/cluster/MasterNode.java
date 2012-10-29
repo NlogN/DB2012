@@ -25,8 +25,8 @@ public class MasterNode extends AbstractNode {
             throws NoSuchAlgorithmException, UnsupportedEncodingException {
         String id = dbRecord.id;
         SlaveNode slaveNode = getNode(id);
-        String slaveResult = slaveNode.performOperation(operation, dbRecord);
-        String masterResult = pop(operation, dbRecord);
+        String  slaveResult = slaveNode.performOperation(operation, dbRecord);
+        String masterResult = performOperationKernel(operation, dbRecord);
         if (operation.equals("retrieve")) {
             return slaveResult;
         }
