@@ -4,15 +4,15 @@ import base.ConsoleApp;
 import base.HashBase;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpServer;
+
 
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.InetSocketAddress;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 /**
  * User: ilya
@@ -23,16 +23,6 @@ public class Server implements HttpHandler {
     HashBase base = new HashBase(2);
 
 
-    public static void main(String[] args) throws IOException {
-        HttpServer server = HttpServer.create(new InetSocketAddress(8000), 10);
-        server.createContext("/", new Server());
-        server.start();
-        System.out.println("server.Server started");
-        System.in.read();
-        server.stop(0);
-        System.out.println("server.Server stoped");
-    }
-
     @Override
     public void handle(HttpExchange exc) throws IOException {
 
@@ -40,6 +30,7 @@ public class Server implements HttpHandler {
         BufferedReader br = new BufferedReader(isr);
         String value = br.readLine();
         value = replaser(value);
+
         String[] commands = value.split("&");
 
         for (int i = 0; i < commands.length; i++) {
@@ -52,14 +43,15 @@ public class Server implements HttpHandler {
         exc.sendResponseHeaders(200, 0);
         PrintWriter out = new PrintWriter(exc.getResponseBody());
 
+
         for (String command:commands){
 
             try {
                 ConsoleApp.perform(command, base, out);
             } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                e.printStackTrace();
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                e.printStackTrace();
             }
         }
 
