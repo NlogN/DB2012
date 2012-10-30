@@ -89,8 +89,8 @@ public class Client {
                 System.out.println(line);
             }
         } catch (HttpHostConnectException e) {
-            if(command.length()>=3){
-                if (command.substring(0, 3).equals("get")) {
+
+                if (command.indexOf("get") == 0 || command.indexOf("flush") == 0 || command.indexOf("load") == 0) {
 
                     int slavePort = getSlavePort(command);
                     HttpPost post1 = new HttpPost(defaultHttp + slavePort + "/");
@@ -106,7 +106,7 @@ public class Client {
                 } else {
                     System.out.println("Server is unavailable.");
                 }
-            }
+
         }
 
     }
@@ -120,6 +120,20 @@ public class Client {
     }
 
     public static int getMasterPortInd(String command) {
+        switch (command) {
+            case "flush1":
+                return 0;
+            case "flush2":
+                return 1;
+            case "flush3":
+                return 2;
+            case "load1":
+                return 0;
+            case "load2":
+                return 1;
+            case "load3":
+                return 2;
+        }
         int hash = hash(command);
         return hash % 3;
     }
@@ -142,9 +156,11 @@ public class Client {
     public static boolean isCorrect(String command) {
         Pattern p1 = Pattern.compile("^((get)|(delete))[(][A-Za-z0-9]+[)]$");
         Pattern p2 = Pattern.compile("^((add)|(update))[(][A-Za-z0-9]+,[+]{0,1}[0-9]+[)]$");
+        Pattern p3 = Pattern.compile("^((flush)|(load))[0-9]{1}$");
         Matcher m1 = p1.matcher(command);
         Matcher m2 = p2.matcher(command);
-        return m1.matches()||m2.matches();
+        Matcher m3 = p3.matcher(command);
+        return m1.matches()||m2.matches()||m3.matches();
     }
 
 

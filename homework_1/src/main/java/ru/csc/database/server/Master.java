@@ -63,7 +63,7 @@ public class Master extends Server {
                     e.printStackTrace();
                 }
 
-                if (!command.substring(0, 3).equals("get")) {
+                if (command.indexOf("get") != 0 && command.indexOf("flush") != 0 && command.indexOf("load") != 0) {
                     updateSlave(command);
                 }
                 out.close();
@@ -86,13 +86,6 @@ public class Master extends Server {
             //System.out.println(command + "to slave");
 
             client1.execute(post);
-            //  HttpResponse response = client.execute(post);
-//                BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-//                String line = "";
-//                while ((line = rd.readLine()) != null) {
-//                    System.out.println(line);
-//                }
-
 
         }
     }
