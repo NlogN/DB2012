@@ -1,4 +1,4 @@
-package base;
+package ru.csc.database.core;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;

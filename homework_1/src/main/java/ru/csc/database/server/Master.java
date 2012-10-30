@@ -1,6 +1,5 @@
-package server;
+package ru.csc.database.server;
 
-import base.ConsoleApp;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -10,6 +9,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import ru.csc.database.core.ConsoleApp;
 
 import java.io.*;
 import java.net.InetSocketAddress;

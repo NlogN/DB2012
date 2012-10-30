@@ -1,4 +1,4 @@
-package server;
+package ru.csc.database.server;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -35,7 +35,6 @@ public class Client {
             posts[i] = new HttpPost(defaultHttp + mastersPorts[i] + "/");
         }
 
-
         try {
             Scanner in = new Scanner(System.in);
             while (in.hasNext()) {
@@ -60,10 +59,7 @@ public class Client {
                             balancer(command, posts[getMasterPortInd(command)]);
                         }
                 }
-
-
             }
-
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -86,6 +82,7 @@ public class Client {
                 System.out.println(line);
             }
         } catch (HttpHostConnectException e) {
+            if(command.length()>=3){
             if (command.substring(0, 3).equals("get")) {
 
                 int slavePort = getSlavePort(command);
@@ -102,13 +99,14 @@ public class Client {
             } else {
                 System.out.println("Cервер недоступен.");
             }
+            }
         }
 
     }
 
     public static int getSlavePort(String command) {
         int hash = hash(command);
-        return getMasterPort(command)+ 1 + (hash % 2);
+        return getMasterPort(command) + 1 + (hash % 2);
     }
 
     public static int getMasterPort(String command) {

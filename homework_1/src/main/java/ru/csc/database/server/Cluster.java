@@ -1,4 +1,4 @@
-package server;
+package ru.csc.database.server;
 
 
 import java.io.IOException;
@@ -62,4 +62,5 @@ public class Cluster {
         masters[2].stop();
         System.out.println("Master3 stoped");
     }
+
 }
