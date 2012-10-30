@@ -24,36 +24,30 @@ public class Server implements HttpHandler {
     @Override
     public void handle(HttpExchange exc) throws IOException {
 
-        InputStreamReader isr =  new InputStreamReader(exc.getRequestBody(),"utf-8");
+        exc.sendResponseHeaders(200, 0);
+
+        InputStreamReader isr = new InputStreamReader(exc.getRequestBody(), "utf-8");
         BufferedReader br = new BufferedReader(isr);
         String value = br.readLine();
+
         value = replaser(value);
 
-        String[] commands = value.split("&");
-
-        for (int i = 0; i < commands.length; i++) {
-            String command = commands[i];
-            if (command.charAt(command.length() - 1) == '=') {
-                commands[i] = command.substring(0, command.length() - 1);
-            }
-        }
-
-        exc.sendResponseHeaders(200, 0);
-        PrintWriter out = new PrintWriter(exc.getResponseBody());
-
-
-        for (String command:commands){
+        int k = value.indexOf("=");
+        if(k!=-1){
+            String command = value.substring(k+1);
+            PrintWriter out = new PrintWriter(exc.getResponseBody());
 
             try {
                 base = ConsoleApp.perform(command, base, out);
-            } catch (NoSuchAlgorithmException | ClassNotFoundException e) {
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
+
+
+            out.close();
         }
-
-
-        out.close();
-        exc.close();
     }
 
     public String replaser(String s){

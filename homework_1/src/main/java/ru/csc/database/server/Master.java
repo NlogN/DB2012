@@ -42,26 +42,19 @@ public class Master extends Server {
 
     class MyHandler implements HttpHandler {
         public void handle(HttpExchange exc) throws IOException {
+            exc.sendResponseHeaders(200, 0);
 
             InputStreamReader isr = new InputStreamReader(exc.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String value = br.readLine();
+
             value = replaser(value);
 
-            String[] commands = value.split("&");
+            int k = value.indexOf("=");
+            if(k!=-1){
+               String command = value.substring(k+1);
+                PrintWriter out = new PrintWriter(exc.getResponseBody());
 
-            for (int i = 0; i < commands.length; i++) {
-                String command = commands[i];
-                if (command.charAt(command.length() - 1) == '=') {
-                    commands[i] = command.substring(0, command.length() - 1);
-                }
-            }
-
-            exc.sendResponseHeaders(200, 0);
-            PrintWriter out = new PrintWriter(exc.getResponseBody());
-
-
-            for (String command : commands) {
                 try {
                     base = ConsoleApp.perform(command, base, out);
                 } catch (NoSuchAlgorithmException e) {
@@ -73,12 +66,8 @@ public class Master extends Server {
                 if (!command.substring(0, 3).equals("get")) {
                     updateSlave(command);
                 }
-
-
+                out.close();
             }
-
-
-            out.close();
             exc.close();
         }
 
@@ -91,7 +80,7 @@ public class Master extends Server {
 
             HttpPost post = new HttpPost(Client.defaultHttp + slavePort + "/");
             List<NameValuePair> nameValuePairs = new ArrayList<>(1);
-            nameValuePairs.add(new BasicNameValuePair(command, ""));
+            nameValuePairs.add(new BasicNameValuePair("command", command));
             post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
             //System.out.println(command + "to slave");

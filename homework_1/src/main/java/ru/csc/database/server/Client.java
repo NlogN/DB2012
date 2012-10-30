@@ -71,7 +71,7 @@ public class Client {
 
     static void balancer(String command, HttpPost post) throws IOException {
         List<NameValuePair> nameValuePairs = new ArrayList<>(1);
-        nameValuePairs.add(new BasicNameValuePair(command, ""));
+        nameValuePairs.add(new BasicNameValuePair("command", command));
 
         try {
             post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -83,22 +83,22 @@ public class Client {
             }
         } catch (HttpHostConnectException e) {
             if(command.length()>=3){
-            if (command.substring(0, 3).equals("get")) {
+                if (command.substring(0, 3).equals("get")) {
 
-                int slavePort = getSlavePort(command);
-                HttpPost post1 = new HttpPost(defaultHttp + slavePort + "/");
-                post1.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                    int slavePort = getSlavePort(command);
+                    HttpPost post1 = new HttpPost(defaultHttp + slavePort + "/");
+                    post1.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
-                HttpResponse response = client.execute(post1);
-                BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-                String line;
-                while ((line = rd.readLine()) != null) {
-                    System.out.println(line);
+                    HttpResponse response = client.execute(post1);
+                    BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                    String line;
+                    while ((line = rd.readLine()) != null) {
+                        System.out.println(line);
+                    }
+
+                } else {
+                    System.out.println("Cервер недоступен.");
                 }
-
-            } else {
-                System.out.println("Cервер недоступен.");
-            }
             }
         }
 
