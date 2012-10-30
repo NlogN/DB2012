@@ -48,19 +48,25 @@ public class Cluster {
         }
     }
 
-    public void m1stop() {
+    public void m1Stop() {
         masters[0].stop();
         System.out.println("Master1 stoped");
     }
 
-    public void m2stop() {
+    public void m2Stop() {
         masters[1].stop();
         System.out.println("Master2 stoped");
     }
 
-    public void m3stop() {
+    public void m3Stop() {
         masters[2].stop();
         System.out.println("Master3 stoped");
+    }
+
+    public void mStop() {
+        for (Master master : masters) {
+            master.stop();
+        }
     }
 
 }

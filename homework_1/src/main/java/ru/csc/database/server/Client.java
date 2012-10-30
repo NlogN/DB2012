@@ -13,6 +13,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * User: ilya
@@ -44,19 +46,24 @@ public class Client {
                         System.out.println("end.");
                         break;
                     case "ms1":
-                        cluster.m1stop();
+                        cluster.m1Stop();
                         break;
                     case "ms2":
-                        cluster.m2stop();
+                        cluster.m2Stop();
                         break;
                     case "ms3":
-                        cluster.m3stop();
+                        cluster.m3Stop();
+                        break;
+                    case "ms":
+                        cluster.mStop();
                         break;
                     default:
 
                         command = command.replaceAll(" ", "");
                         if (isCorrect(command)) {
                             balancer(command, posts[getMasterPortInd(command)]);
+                        } else{
+                            System.out.println("Unknown command.");
                         }
                 }
             }
@@ -97,7 +104,7 @@ public class Client {
                     }
 
                 } else {
-                    System.out.println("Cервер недоступен.");
+                    System.out.println("Server is unavailable.");
                 }
             }
         }
@@ -132,8 +139,14 @@ public class Client {
         return 0;
     }
 
-    //TODO реализовать
+
     public static boolean isCorrect(String command) {
-        return true;
+        Pattern p1 = Pattern.compile("^((get)|(delete))[(][A-Za-zА-Яа-я0-9]+[)]$");
+        Pattern p2 = Pattern.compile("^((add)|(update))[(][A-Za-zА-Яа-я0-9]+,[+]{0,1}[0-9]+[)]$");
+        Matcher m1 = p1.matcher(command);
+        Matcher m2 = p2.matcher(command);
+        return m1.matches()||m2.matches();
     }
+
+
 }
