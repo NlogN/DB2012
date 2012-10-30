@@ -112,8 +112,7 @@ public class Client {
     }
 
     public static int getSlavePort(String command) {
-        int hash = hash(command);
-        return getMasterPort(command) + 1 + (hash % 2);
+        return getMasterPort(command) + 1;
     }
 
     public static int getMasterPort(String command) {
@@ -141,8 +140,8 @@ public class Client {
 
 
     public static boolean isCorrect(String command) {
-        Pattern p1 = Pattern.compile("^((get)|(delete))[(][A-Za-zА-Яа-я0-9]+[)]$");
-        Pattern p2 = Pattern.compile("^((add)|(update))[(][A-Za-zА-Яа-я0-9]+,[+]{0,1}[0-9]+[)]$");
+        Pattern p1 = Pattern.compile("^((get)|(delete))[(][A-Za-z0-9]+[)]$");
+        Pattern p2 = Pattern.compile("^((add)|(update))[(][A-Za-z0-9]+,[+]{0,1}[0-9]+[)]$");
         Matcher m1 = p1.matcher(command);
         Matcher m2 = p2.matcher(command);
         return m1.matches()||m2.matches();

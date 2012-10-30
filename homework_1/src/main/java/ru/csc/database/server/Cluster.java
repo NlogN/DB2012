@@ -23,20 +23,16 @@ public class Cluster {
         masters = new Master[]{master1, master2, master3};
 
         int slavePort11 = masterPort1 + 1;
-        int slavePort12 = masterPort1 + 2;
         int slavePort21 = masterPort2 + 1;
-        int slavePort22 = masterPort2 + 2;
         int slavePort31 = masterPort3 + 1;
-        int slavePort32 = masterPort3 + 2;
+
 
         Slave slave11 = new Slave(slavePort11);
-        Slave slave12 = new Slave(slavePort12);
         Slave slave21 = new Slave(slavePort21);
-        Slave slave22 = new Slave(slavePort22);
         Slave slave31 = new Slave(slavePort31);
-        Slave slave32 = new Slave(slavePort32);
 
-        slaves = new Slave[]{slave11, slave12, slave21, slave22, slave31, slave32};
+
+        slaves = new Slave[]{slave11, slave21, slave31};
     }
 
     public void stop() {
@@ -50,23 +46,24 @@ public class Cluster {
 
     public void m1Stop() {
         masters[0].stop();
-        System.out.println("Master1 stoped");
+        System.out.println("Master1 stoped.");
     }
 
     public void m2Stop() {
         masters[1].stop();
-        System.out.println("Master2 stoped");
+        System.out.println("Master2 stoped.");
     }
 
     public void m3Stop() {
         masters[2].stop();
-        System.out.println("Master3 stoped");
+        System.out.println("Master3 stoped.");
     }
 
     public void mStop() {
         for (Master master : masters) {
             master.stop();
         }
+        System.out.println("Masters stoped.");
     }
 
 }
