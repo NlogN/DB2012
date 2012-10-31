@@ -44,6 +44,24 @@ public class Cluster {
         }
     }
 
+    public void sh1Stop() {
+        masters[0].stop();
+        slaves[0].stop();
+        System.out.println("shard1 stoped.");
+    }
+
+    public void sh2Stop() {
+        masters[1].stop();
+        slaves[1].stop();
+        System.out.println("shard2 stoped.");
+    }
+
+    public void sh3Stop() {
+        masters[2].stop();
+        slaves[2].stop();
+        System.out.println("shard3 stoped.");
+    }
+
     public void m1Stop() {
         masters[0].stop();
         System.out.println("Master1 stoped.");

@@ -59,6 +59,15 @@ public class Client {
                     case "ms":
                         cluster.mStop();
                         break;
+                    case "sh1":
+                        cluster.sh1Stop();
+                        break;
+                    case "sh2":
+                        cluster.sh2Stop();
+                        break;
+                    case "sh3":
+                        cluster.sh3Stop();
+                        break;
                     case "flush":
                         perform("flush1", posts);
                         perform("flush2",posts);
@@ -111,15 +120,20 @@ public class Client {
                     HttpPost post1 = new HttpPost(defaultHttp + slavePort + "/");
                     post1.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
-                    HttpResponse response = client.execute(post1);
-                    BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-                    String line;
-                    while ((line = rd.readLine()) != null) {
-                        System.out.println(line);
+                    try {
+                        HttpResponse response = client.execute(post1);
+                        BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                        String line;
+                        while ((line = rd.readLine()) != null) {
+                            System.out.println(line);
+                        }
+                    } catch (HttpHostConnectException e1) {
+                        System.out.println("Required server is unavailable.");
                     }
 
+
                 } else {
-                    System.out.println("Server is unavailable.");
+                    System.out.println("Required server is unavailable.");
                 }
 
         }
