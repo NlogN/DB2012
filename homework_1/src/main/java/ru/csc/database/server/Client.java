@@ -8,8 +8,10 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import ru.csc.database.core.HashBase;
 
 import java.io.*;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -57,14 +59,18 @@ public class Client {
                     case "ms":
                         cluster.mStop();
                         break;
+                    case "flush":
+                        perform("flush1", posts);
+                        perform("flush2",posts);
+                        perform("flush3",posts);
+                        break;
+                    case "load":
+                        perform("load1",posts);
+                        perform("load2",posts);
+                        perform("load3", posts);
+                        break;
                     default:
-
-                        command = command.replaceAll(" ", "");
-                        if (isCorrect(command)) {
-                            balancer(command, posts[getMasterPortInd(command)]);
-                        } else{
-                            System.out.println("Unknown command.");
-                        }
+                      perform(command,posts);
                 }
             }
 
@@ -74,6 +80,15 @@ public class Client {
 
         cluster.stop();
 
+    }
+
+    static void perform(String command, HttpPost[] posts) throws IOException {
+        command = command.replaceAll(" ", "");
+        if (isCorrect(command)) {
+            balancer(command, posts[getMasterPortInd(command)]);
+        } else{
+            System.out.println("Unknown command.");
+        }
     }
 
     static void balancer(String command, HttpPost post) throws IOException {
@@ -147,7 +162,15 @@ public class Client {
         if (ind1 < ind2) {
             String key = command.substring(ind1 + 1, ind2);
 
-            return key.length();
+            int res = 0;
+            try {
+                res = HashBase.hash(key, 5);
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            return res;
         }
         return 0;
     }
