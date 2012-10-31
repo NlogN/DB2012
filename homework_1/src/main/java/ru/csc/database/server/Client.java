@@ -69,17 +69,17 @@ public class Client {
                         cluster.sh3Stop();
                         break;
                     case "flush":
-                        perform("flush1", posts);
+                        perform("flush1",posts);
                         perform("flush2",posts);
                         perform("flush3",posts);
                         break;
                     case "load":
-                        perform("load1",posts);
-                        perform("load2",posts);
+                        perform("load1", posts);
+                        perform("load2", posts);
                         perform("load3", posts);
                         break;
                     default:
-                      perform(command,posts);
+                      perform(command, posts);
                 }
             }
 
@@ -163,11 +163,10 @@ public class Client {
             case "load3":
                 return 2;
         }
-        int hash = hash(command);
-        return hash % 3;
+        return hash(command, 3);
     }
 
-    public static int hash(String command) {
+    public static int hash(String command, int maxHashValue) {
         int ind1 = command.indexOf("(");
         int ind2 = command.indexOf(",");
         if (ind2 == -1) {
@@ -178,10 +177,8 @@ public class Client {
 
             int res = 0;
             try {
-                res = HashBase.hash(key, 5);
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
+                res = HashBase.hash(key, maxHashValue);
+            } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
             return res;

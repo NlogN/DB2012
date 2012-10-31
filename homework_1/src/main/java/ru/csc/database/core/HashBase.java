@@ -84,7 +84,9 @@ public class HashBase implements Serializable {
         fatherRecord.next = fatherRecord.next.next;
     }
 
-    public static int hash(String id, int size) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+
+
+    public static int hash(String id, int maxHashValue) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 
         MessageDigest md = MessageDigest.getInstance("MD5");
         byte[] recordInBytes = id.getBytes("UTF-8");
@@ -95,7 +97,7 @@ public class HashBase implements Serializable {
         for (int i : hashInBytes) {
             result *= 256;
             result += i + 128;
-            result %= size;
+            result %= maxHashValue;
         }
 
         return  result;

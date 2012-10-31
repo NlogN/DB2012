@@ -18,7 +18,7 @@ import java.security.NoSuchAlgorithmException;
  */
 
 public class Server implements HttpHandler {
-    HashBase base = new HashBase(2);
+    HashBase base = new HashBase();
 
 
     @Override
@@ -39,9 +39,7 @@ public class Server implements HttpHandler {
 
             try {
                 base = ConsoleApp.perform(command, base, out);
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (NoSuchAlgorithmException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
 
