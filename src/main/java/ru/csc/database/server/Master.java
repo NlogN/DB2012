@@ -27,6 +27,7 @@ public class Master extends Server {
 
 
     public Master(int port) throws IOException {
+        super();
         this.port = port;
         server = HttpServer.create(new InetSocketAddress(port), 10);
         server.createContext("/", new MyHandler());

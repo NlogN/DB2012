@@ -93,7 +93,13 @@ public class Client {
     static void perform(String command, HttpPost[] posts) throws IOException {
         command = command.replaceAll(" ", "");
         if (isCorrect(command)) {
-            balancer(command, posts[getMasterPortInd(command)]);
+            if (command.indexOf("getall") == 0) {
+                for (HttpPost post : posts) {
+                    balancer(command, post);
+                }
+            } else {
+                balancer(command, posts[getMasterPortInd(command)]);
+            }
         } else{
             System.out.println("Unknown command.");
         }

@@ -57,7 +57,6 @@ public class ConsoleApp {
 
                 } else if (operation.equals("getall")) {
                     for (DBRecord dbRecord : base.retrieveAll()) {
-                        System.out.println("mu");
                         out.println(dbRecord);
                     }
 

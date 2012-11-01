@@ -18,7 +18,11 @@ import java.security.NoSuchAlgorithmException;
  */
 
 public class Server implements HttpHandler {
-    HashBase base = new HashBase();
+    HashBase base;
+
+    Server() {
+        base = new HashBase();
+    }
 
 
     @Override
