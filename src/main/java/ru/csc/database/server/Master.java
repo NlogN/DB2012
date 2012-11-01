@@ -50,6 +50,8 @@ public class Master extends Server {
             String value = br.readLine();
 
             value = replaser(value);
+            value = retranslateRuText(value);
+
 
             int k = value.indexOf("=");
             if(k!=-1){

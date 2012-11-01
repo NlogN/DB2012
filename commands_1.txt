@@ -2,5 +2,7 @@ add(sidorov, 12312)
 get(sidorov)
 update(sidorov,+7921329439)
 delete(sidorov)
+add(Иван, 12312)
+get(Иван)
 flush
 exit

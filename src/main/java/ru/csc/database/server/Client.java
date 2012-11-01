@@ -95,6 +95,7 @@ public class Client {
     static void perform(String command, HttpPost[] posts) throws IOException {
         command = command.replaceAll(" ", "");
         if (isCorrect(command)) {
+            command = translateRuText(command);
             if (command.indexOf("getall") == 0) {
                 for (HttpPost post : posts) {
                     balancer(command, post);
@@ -198,8 +199,8 @@ public class Client {
 
 
     public static boolean isCorrect(String command) {
-        Pattern p1 = Pattern.compile("^((get)|(delete)|(add))[(][A-Za-z0-9]+[)]$");
-        Pattern p2 = Pattern.compile("^((add)|(update))[(][A-Za-z0-9]+,[+]{0,1}[0-9]+[)]$");
+        Pattern p1 = Pattern.compile("^((get)|(delete)|(add))[(][A-Za-zА-Яа-я]+[)]$");
+        Pattern p2 = Pattern.compile("^((add)|(update))[(][A-Za-zА-Яа-я]+,[+]{0,1}[0-9]+[)]$");
         Pattern p3 = Pattern.compile("^((flush)|(load)|)[0-9]{1}$");
         Pattern p4 = Pattern.compile("^getall$");
         Matcher m1 = p1.matcher(command);
@@ -207,6 +208,13 @@ public class Client {
         Matcher m3 = p3.matcher(command);
         Matcher m4 = p4.matcher(command);
         return m1.matches()||m2.matches()||m3.matches()||m4.matches();
+    }
+
+    private static String translateRuText(String s) {
+        for (int i = 1040; i <= 1103; i++) {
+            s = s.replaceAll(Character.toString((char) i), "\\$" + i + "\\$");
+        }
+        return s;
     }
 
 

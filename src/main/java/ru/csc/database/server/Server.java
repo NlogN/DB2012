@@ -35,6 +35,7 @@ public class Server implements HttpHandler {
         String value = br.readLine();
 
         value = replaser(value);
+        value = retranslateRuText(value);
 
         int k = value.indexOf("=");
         if(k!=-1){
@@ -61,6 +62,21 @@ public class Server implements HttpHandler {
         s = s.replaceAll("%2B","+");
         s = s.replaceAll("%28","(");
         s = s.replaceAll("%29",")");
+        s = s.replaceAll("%24","\\$");
+        return s;
+    }
+
+    protected static String retranslateRuText(String s) {
+        for (int i = 1040; i <= 1103; i++) {
+            s = s.replaceAll("\\$" + i + "\\$", Character.toString((char) i));
+        }
+        return s;
+    }
+
+    protected static String translateRuText(String s) {
+        for (int i = 1040; i <= 1103; i++) {
+            s = s.replaceAll(Character.toString((char) i), "\\$" + i + "\\$");
+        }
         return s;
     }
 }
