@@ -8,7 +8,8 @@ import java.util.StringTokenizer;
 public class ConsoleApp {
 
     final private static String [] permittedOperations =
-            {"add", "update", "delete", "get", "flush", "load", "exit"};
+            {"add", "update", "delete", "get", "getall", "flush", "load",
+                    "exit"};
 
     public static HashBase perform(String input, HashBase base,
                             PrintWriter out) throws NoSuchAlgorithmException, IOException, ClassNotFoundException {
@@ -54,7 +55,12 @@ public class ConsoleApp {
                         break;
                     case "get":
                         out.println(base.retrieve(id));
-                        //  System.out.println(base.retrieve(id) + "\n");
+                        break;
+                    case "getall":
+                        for (DBRecord dbRecord : base.retrieveAll()) {
+                            System.out.println("mu");
+                            out.println(dbRecord);
+                        }
                         break;
                     case "delete":
                         base.delete(id);

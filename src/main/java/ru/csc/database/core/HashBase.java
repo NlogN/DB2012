@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -61,6 +62,18 @@ public class HashBase implements Serializable {
             return null;
         }
         return result.next;
+    }
+
+    List<DBRecord> retrieveAll() throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        List<DBRecord> result = new ArrayList<DBRecord>();
+        for (DBRecord temp : store) {
+            DBRecord next = temp.next; // первая запись - пустая, => не нужна
+            while (next != null) {
+                result.add(next);
+                next = next.next;
+            }
+        }
+        return result;
     }
 
     void update(DBRecord record) throws NoSuchAlgorithmException, UnsupportedEncodingException {

@@ -112,7 +112,7 @@ public class Client {
             while ((line = rd.readLine()) != null) {
                 System.out.println(line);
             }
-        } catch (HttpHostConnectException e) {
+        } catch (HttpHostConnectException e) { // если мастер упал
 
                 if (command.indexOf("get") == 0 || command.indexOf("flush") == 0 || command.indexOf("load") == 0) {
 
@@ -190,11 +190,13 @@ public class Client {
     public static boolean isCorrect(String command) {
         Pattern p1 = Pattern.compile("^((get)|(delete)|(add))[(][A-Za-z0-9]+[)]$");
         Pattern p2 = Pattern.compile("^((add)|(update))[(][A-Za-z0-9]+,[+]{0,1}[0-9]+[)]$");
-        Pattern p3 = Pattern.compile("^((flush)|(load))[0-9]{1}$");
+        Pattern p3 = Pattern.compile("^((flush)|(load)|)[0-9]{1}$");
+        Pattern p4 = Pattern.compile("^getall$");
         Matcher m1 = p1.matcher(command);
         Matcher m2 = p2.matcher(command);
         Matcher m3 = p3.matcher(command);
-        return m1.matches()||m2.matches()||m3.matches();
+        Matcher m4 = p4.matcher(command);
+        return m1.matches()||m2.matches()||m3.matches()||m4.matches();
     }
 
 
