@@ -1,5 +1,0 @@
-load
-retrieve kesarev
-retrieve epifanov
-retrieve komarov
-exit
