@@ -79,6 +79,8 @@ public class Master extends Server {
 
             HttpClient client1 = new DefaultHttpClient();
 
+            command = translateRuText(command);
+
             int slavePort = Client.getSlavePort(command);
 
             HttpPost post = new HttpPost(Client.defaultHttp + slavePort + "/");
