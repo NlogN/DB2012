@@ -22,8 +22,8 @@ import java.util.List;
  * Date: 25.10.12
  */
 public class Master extends Server {
-    HttpServer server;
-    int port;
+    private HttpServer server;
+    private int port;
 
 
     public Master(int port) throws IOException {
@@ -32,12 +32,13 @@ public class Master extends Server {
         server = HttpServer.create(new InetSocketAddress(port), 10);
         server.createContext("/", new MyHandler());
         server.start();
-        //  System.out.println("server on port " + port + " started");
+        System.out.println("server on port " + port + " started");
     }
 
-    public void stop() {
+
+    private void stop() {
         server.stop(0);
-        //  System.out.println("server on port " + port + " stoped");
+        System.out.println("server on port " + port + " stoped");
     }
 
 
@@ -54,31 +55,39 @@ public class Master extends Server {
 
 
             int k = value.indexOf("=");
-            if(k!=-1){
-               String command = value.substring(k+1);
-                PrintWriter out = new PrintWriter(exc.getResponseBody());
+            if (k != -1) {
+                String command = value.substring(k + 1);
+                if (command.indexOf("ms") == 0) {
+                    stop();
+                } else {
+                    if (command.indexOf("sh") == 0) {
+                        updateSlave(command);
+                        stop();
+                    } else {
 
-                try {
-                    base = ConsoleApp.perform(command, base, out);
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
+                        PrintWriter out = new PrintWriter(exc.getResponseBody());
 
-                if (command.indexOf("get") != 0 && command.indexOf("flush") != 0) {
-                    updateSlave(command);
+                        try {
+                            base = ConsoleApp.perform(command, base, out);
+                        } catch (NoSuchAlgorithmException e) {
+                            e.printStackTrace();
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (command.indexOf("get") != 0 && command.indexOf("flush") != 0) {
+                            updateSlave(command);
+                        }
+                        out.close();
+                    }
                 }
-                out.close();
             }
             exc.close();
         }
 
 
         public void updateSlave(String command) throws IOException {
-
-            HttpClient client1 = new DefaultHttpClient();
-
+            HttpClient client = new DefaultHttpClient();
             command = translateRuText(command);
 
             int slavePort = Client.getSlavePort(command);
@@ -90,8 +99,19 @@ public class Master extends Server {
 
             //System.out.println(command + "to slave");
 
-            client1.execute(post);
+            client.execute(post);
 
         }
+
+
+    }
+
+    public static void main(String[] args) throws IOException {
+      // Master master = new Master(Integer.parseInt("8006"));
+         if(args.length==1){
+             Master master = new Master(Integer.parseInt(args[0]));
+         }else{
+             System.out.println("incorrect parameter");
+         }
     }
 }

@@ -32,7 +32,7 @@ public class Client {
 
     public static void main(String[] args) throws IOException {
 
-        Cluster cluster = new Cluster(port);
+       //Cluster cluster = new Cluster(port);
 
         HttpPost[] posts = new HttpPost[mastersPorts.length];
         for (int i = 0; i < posts.length; i++) {
@@ -45,30 +45,35 @@ public class Client {
                 String command = in.nextLine();
                 if (command.equals("esk")) {
                     System.out.println("end.");
-                    cluster.stop();
+                   // cluster.stop();
+                    perform("sh1", posts);
+                    perform("sh2", posts);
+                    perform("sh3", posts);
                     System.exit(0);
 
                 } else if (command.equals("ms1")) {
-                    cluster.m1Stop();
+                    perform(command, posts);
 
                 } else if (command.equals("ms2")) {
-                    cluster.m2Stop();
+                    perform(command, posts);
 
                 } else if (command.equals("ms3")) {
-                    cluster.m3Stop();
+                    perform(command, posts);
 
                 } else if (command.equals("ms")) {
-                    cluster.mStop();
+                    perform("ms1", posts);
+                    perform("ms2", posts);
+                    perform("ms3", posts);
 
                 } else if (command.equals("sh1")) {
-                    cluster.sh1Stop();
-
+                   // cluster.sh1Stop();
+                    perform(command, posts);
                 } else if (command.equals("sh2")) {
-                    cluster.sh2Stop();
-
+                   // cluster.sh2Stop();
+                    perform(command, posts);
                 } else if (command.equals("sh3")) {
-                    cluster.sh3Stop();
-
+                   // cluster.sh3Stop();
+                    perform(command, posts);
                 } else if (command.equals("flush")) {
                     perform("flush1", posts);
                     perform("flush2", posts);
@@ -88,7 +93,7 @@ public class Client {
             e.printStackTrace();
         }
 
-        cluster.stop();
+     //   cluster.stop();
 
     }
 
@@ -170,6 +175,26 @@ public class Client {
         } else if (command.equals("load3")) {
             return 2;
         }
+        if (command.equals("ms1")) {
+            return 0;
+        }
+        if (command.equals("ms2")) {
+            return 1;
+        }
+        if (command.equals("ms3")) {
+            return 2;
+        }
+        if (command.equals("sh1")) {
+            return 0;
+        }
+        if (command.equals("sh2")) {
+            return 1;
+        }
+        if (command.equals("sh3")) {
+            return 2;
+        }
+
+
         return hash(command, 3);
     }
 
@@ -203,11 +228,13 @@ public class Client {
         Pattern p2 = Pattern.compile("^((add)|(update))[(][A-Za-zА-Яа-я]+,[+]{0,1}[0-9]+[)]$");
         Pattern p3 = Pattern.compile("^((flush)|(load)|)[0-9]{1}$");
         Pattern p4 = Pattern.compile("^getall$");
+        Pattern p5 = Pattern.compile("^((ms)|(sh))[1-3]{0,1}$");
         Matcher m1 = p1.matcher(command);
         Matcher m2 = p2.matcher(command);
         Matcher m3 = p3.matcher(command);
         Matcher m4 = p4.matcher(command);
-        return m1.matches()||m2.matches()||m3.matches()||m4.matches();
+        Matcher m5 = p5.matcher(command);
+        return m1.matches()||m2.matches()||m3.matches()||m4.matches()||m5.matches();
     }
 
     private static String translateRuText(String s) {
