@@ -1,6 +1,6 @@
-package database.server;
+package ru.csc.database.server;
 
-import database.core.HashBase;
+import ru.csc.database.core.HashBase;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -101,7 +101,7 @@ public class Client {
     }
 
     static void balancer(String command, HttpPost post) throws IOException {
-        List<NameValuePair> nameValuePairs = new ArrayList<>(1);
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
         nameValuePairs.add(new BasicNameValuePair("command", command));
 
         try {

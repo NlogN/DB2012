@@ -1,4 +1,4 @@
-package database.server;
+package ru.csc.database.server;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -9,7 +9,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import database.core.ConsoleApp;
+import ru.csc.database.core.ConsoleApp;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -77,7 +77,7 @@ public class Master extends Server {
             int slavePort = Client.getSlavePort(command);
 
             HttpPost post = new HttpPost(Client.defaultHttp + slavePort + "/");
-            List<NameValuePair> nameValuePairs = new ArrayList<>(1);
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
             nameValuePairs.add(new BasicNameValuePair("command", command));
             post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 

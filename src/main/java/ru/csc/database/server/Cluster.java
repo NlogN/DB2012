@@ -1,4 +1,4 @@
-package database.server;
+package ru.csc.database.server;
 
 
 import java.io.IOException;

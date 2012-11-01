@@ -1,6 +1,7 @@
-package database.server;
+package ru.csc.database.server;
 
 import com.sun.net.httpserver.HttpServer;
+import ru.csc.database.server.Server;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
