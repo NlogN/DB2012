@@ -45,6 +45,8 @@ public class Client {
                 String command = in.nextLine();
                 if (command.equals("esk")) {
                     System.out.println("end.");
+                    cluster.stop();
+                    System.exit(0);
 
                 } else if (command.equals("ms1")) {
                     cluster.m1Stop();
