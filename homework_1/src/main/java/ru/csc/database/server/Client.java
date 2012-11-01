@@ -188,7 +188,7 @@ public class Client {
 
 
     public static boolean isCorrect(String command) {
-        Pattern p1 = Pattern.compile("^((get)|(delete))[(][A-Za-z0-9]+[)]$");
+        Pattern p1 = Pattern.compile("^((get)|(delete)|(add))[(][A-Za-z0-9]+[)]$");
         Pattern p2 = Pattern.compile("^((add)|(update))[(][A-Za-z0-9]+,[+]{0,1}[0-9]+[)]$");
         Pattern p3 = Pattern.compile("^((flush)|(load))[0-9]{1}$");
         Matcher m1 = p1.matcher(command);
