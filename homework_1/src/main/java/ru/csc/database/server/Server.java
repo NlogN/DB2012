@@ -43,7 +43,6 @@ public class Server implements HttpHandler {
                 e.printStackTrace();
             }
 
-
             out.close();
         }
     }

@@ -6,7 +6,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
-
 /**
  * Created with IntelliJ IDEA.
  * User: Sergey Epifanov
@@ -26,8 +25,7 @@ public class HashBase implements Serializable {
     private final ArrayList<DBRecord> store;
 
     public HashBase() {
-        baseSize = DEFAULT_BASE_SIZE;
-        store = new ArrayList<DBRecord>(baseSize);
+        this(DEFAULT_BASE_SIZE);
     }
 
     public HashBase(int baseSize) {
