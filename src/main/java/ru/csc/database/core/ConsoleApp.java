@@ -46,35 +46,34 @@ public class ConsoleApp {
                 objectInputStream.close();
                 fileInputStream.close();
             }else{
-                switch (operation) {
-                    case "add":
-                        base.create(record);
-                        break;
-                    case "update":
-                        base.update(record);
-                        break;
-                    case "get":
-                        out.println(base.retrieve(id));
-                        break;
-                    case "getall":
-                        for (DBRecord dbRecord : base.retrieveAll()) {
-                            System.out.println("mu");
-                            out.println(dbRecord);
-                        }
-                        break;
-                    case "delete":
-                        base.delete(id);
-                        break;
-                    case "exit":
-                        System.out.println("end.");
-                        return base;
-                    default:
-                        out.print("Unknown command. Known commands are: ");
-                        for (String command : permittedOperations) {
-                            out.print(command + ", ");
-                        }
-                        System.out.println();
-                        break;
+                if (operation.equals("add")) {
+                    base.create(record);
+
+                } else if (operation.equals("update")) {
+                    base.update(record);
+
+                } else if (operation.equals("get")) {
+                    out.println(base.retrieve(id));
+
+                } else if (operation.equals("getall")) {
+                    for (DBRecord dbRecord : base.retrieveAll()) {
+                        System.out.println("mu");
+                        out.println(dbRecord);
+                    }
+
+                } else if (operation.equals("delete")) {
+                    base.delete(id);
+
+                } else if (operation.equals("exit")) {
+                    System.out.println("end.");
+                    return base;
+                } else {
+                    out.print("Unknown command. Known commands are: ");
+                    for (String command : permittedOperations) {
+                        out.print(command + ", ");
+                    }
+                    System.out.println();
+
                 }
             }
         }

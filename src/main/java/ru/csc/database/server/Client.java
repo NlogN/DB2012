@@ -43,43 +43,42 @@ public class Client {
             Scanner in = new Scanner(System.in);
             while (in.hasNext()) {
                 String command = in.nextLine();
-                switch (command) {
-                    case "esk":
-                        System.out.println("end.");
-                        break;
-                    case "ms1":
-                        cluster.m1Stop();
-                        break;
-                    case "ms2":
-                        cluster.m2Stop();
-                        break;
-                    case "ms3":
-                        cluster.m3Stop();
-                        break;
-                    case "ms":
-                        cluster.mStop();
-                        break;
-                    case "sh1":
-                        cluster.sh1Stop();
-                        break;
-                    case "sh2":
-                        cluster.sh2Stop();
-                        break;
-                    case "sh3":
-                        cluster.sh3Stop();
-                        break;
-                    case "flush":
-                        perform("flush1",posts);
-                        perform("flush2",posts);
-                        perform("flush3",posts);
-                        break;
-                    case "load":
-                        perform("load1", posts);
-                        perform("load2", posts);
-                        perform("load3", posts);
-                        break;
-                    default:
-                      perform(command, posts);
+                if (command.equals("esk")) {
+                    System.out.println("end.");
+
+                } else if (command.equals("ms1")) {
+                    cluster.m1Stop();
+
+                } else if (command.equals("ms2")) {
+                    cluster.m2Stop();
+
+                } else if (command.equals("ms3")) {
+                    cluster.m3Stop();
+
+                } else if (command.equals("ms")) {
+                    cluster.mStop();
+
+                } else if (command.equals("sh1")) {
+                    cluster.sh1Stop();
+
+                } else if (command.equals("sh2")) {
+                    cluster.sh2Stop();
+
+                } else if (command.equals("sh3")) {
+                    cluster.sh3Stop();
+
+                } else if (command.equals("flush")) {
+                    perform("flush1", posts);
+                    perform("flush2", posts);
+                    perform("flush3", posts);
+
+                } else if (command.equals("load")) {
+                    perform("load1", posts);
+                    perform("load2", posts);
+                    perform("load3", posts);
+
+                } else {
+                    perform(command, posts);
                 }
             }
 
@@ -149,19 +148,18 @@ public class Client {
     }
 
     public static int getMasterPortInd(String command) {
-        switch (command) {
-            case "flush1":
-                return 0;
-            case "flush2":
-                return 1;
-            case "flush3":
-                return 2;
-            case "load1":
-                return 0;
-            case "load2":
-                return 1;
-            case "load3":
-                return 2;
+        if (command.equals("flush1")) {
+            return 0;
+        } else if (command.equals("flush2")) {
+            return 1;
+        } else if (command.equals("flush3")) {
+            return 2;
+        } else if (command.equals("load1")) {
+            return 0;
+        } else if (command.equals("load2")) {
+            return 1;
+        } else if (command.equals("load3")) {
+            return 2;
         }
         return hash(command, 3);
     }
@@ -176,11 +174,15 @@ public class Client {
             String key = command.substring(ind1 + 1, ind2);
 
             int res = 0;
-            try {
-                res = HashBase.hash(key, maxHashValue);
-            } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+
+                try {
+                    res = HashBase.hash(key, maxHashValue);
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
             return res;
         }
         return 0;

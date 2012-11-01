@@ -37,11 +37,15 @@ public class Server implements HttpHandler {
             String command = value.substring(k+1);
             PrintWriter out = new PrintWriter(exc.getResponseBody());
 
+
             try {
                 base = ConsoleApp.perform(command, base, out);
-            } catch (NoSuchAlgorithmException | ClassNotFoundException e) {
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
+
 
             out.close();
         }

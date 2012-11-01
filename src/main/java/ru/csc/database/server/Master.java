@@ -57,11 +57,13 @@ public class Master extends Server {
 
                 try {
                     base = ConsoleApp.perform(command, base, out);
-                } catch (NoSuchAlgorithmException | ClassNotFoundException e) {
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
 
-                if (command.indexOf("get") != 0 && command.indexOf("flush") != 0 && command.indexOf("load") != 0) {
+                if (command.indexOf("get") != 0 && command.indexOf("flush") != 0) {
                     updateSlave(command);
                 }
                 out.close();
