@@ -1,7 +1,0 @@
-create kesarev +7922kes
-create epifanov +7922epi email@email.com
-create komarov +7922kom
-delete epifanov
-write
-exit
-

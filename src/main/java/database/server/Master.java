@@ -1,4 +1,4 @@
-package ru.csc.database.server;
+package database.server;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -9,7 +9,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import ru.csc.database.core.ConsoleApp;
+import database.core.ConsoleApp;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -57,9 +57,7 @@ public class Master extends Server {
 
                 try {
                     base = ConsoleApp.perform(command, base, out);
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
+                } catch (NoSuchAlgorithmException | ClassNotFoundException e) {
                     e.printStackTrace();
                 }
 

@@ -1,5 +1,6 @@
-package ru.csc.database.server;
+package database.server;
 
+import database.core.HashBase;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -8,7 +9,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import ru.csc.database.core.HashBase;
 
 import java.io.*;
 import java.security.NoSuchAlgorithmException;
