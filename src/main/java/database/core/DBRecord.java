@@ -1,4 +1,4 @@
-package ru.csc.database.core;
+package database.core;
 
 import java.io.Serializable;
 

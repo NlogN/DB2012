@@ -1,4 +1,4 @@
-package ru.csc.database.server;
+package database.server;
 
 import com.sun.net.httpserver.HttpServer;
 

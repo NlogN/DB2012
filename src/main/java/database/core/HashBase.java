@@ -1,11 +1,10 @@
-package ru.csc.database.core;
+package database.core;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,7 +25,7 @@ public class HashBase implements Serializable {
     private final ArrayList<DBRecord> store;
 
     public HashBase() {
-         this(DEFAULT_BASE_SIZE);
+        this(DEFAULT_BASE_SIZE);
     }
 
     public HashBase(int baseSize) {
@@ -83,7 +82,9 @@ public class HashBase implements Serializable {
         fatherRecord.next = fatherRecord.next.next;
     }
 
-    public static int hash(String id, int size) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+
+
+    public static int hash(String id, int maxHashValue) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 
         MessageDigest md = MessageDigest.getInstance("MD5");
         byte[] recordInBytes = id.getBytes("UTF-8");
@@ -94,7 +95,7 @@ public class HashBase implements Serializable {
         for (int i : hashInBytes) {
             result *= 256;
             result += i + 128;
-            result %= size;
+            result %= maxHashValue;
         }
 
         return  result;

@@ -1,9 +1,9 @@
-package ru.csc.database.server;
+package database.server;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import ru.csc.database.core.ConsoleApp;
-import ru.csc.database.core.HashBase;
+import database.core.ConsoleApp;
+import database.core.HashBase;
 
 
 import java.io.BufferedReader;
