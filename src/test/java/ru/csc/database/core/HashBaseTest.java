@@ -2,6 +2,7 @@ package ru.csc.database.core;
 
 import org.junit.Assert;
 import org.junit.Test;
+import ru.csc.database.core.DBRecord;
 
 import java.io.*;
 import java.security.NoSuchAlgorithmException;
@@ -37,13 +38,14 @@ public class HashBaseTest {
 //        add record
         ConsoleApp.perform("add(" + surname + "," + telNumber + ")", hashBase, new PrintWriter(System.out));
 //        flush base
-        ConsoleApp.perform("flush 1", hashBase, new PrintWriter(System.out));
+        ConsoleApp.perform("flush", hashBase, new PrintWriter(System.out));
 //        exit
-        ConsoleApp.perform("exit", hashBase, new PrintWriter(System.out));
+        ConsoleApp.perform("esk", hashBase, new PrintWriter(System.out));
 
-        final HashBase loadedHashBase = new HashBase();
+        HashBase loadedHashBase = new HashBase();
 //        load base
-        ConsoleApp.perform("load 1", loadedHashBase, new PrintWriter(System.out));
+        loadedHashBase = ConsoleApp.perform("load", loadedHashBase,
+                new PrintWriter(System.out));
 //        base should contain my record
         Assert.assertNotNull(loadedHashBase.retrieve(surname));
     }
