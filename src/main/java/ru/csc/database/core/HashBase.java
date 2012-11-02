@@ -39,12 +39,10 @@ public class HashBase implements Serializable {
         }
     }
 
-    void create(DBRecord record) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    boolean create(DBRecord record) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         DBRecord fatherRecord = find(record.id);
         if (fatherRecord != null) { // there is record with the same id in base
-            System.out.println("Create: There is record with id == " + record.id +
-                    " , do you want to update?");
-            return;
+            return false;
         }
 
         int index = hash(record.id);
@@ -53,12 +51,13 @@ public class HashBase implements Serializable {
             endListRecord = endListRecord.next;
         }
         endListRecord.next = record;
+        return true;
     }
 
     DBRecord retrieve (String id) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         DBRecord result = find(id);
         if (result == null) {
-            System.out.println("Retrieve: No record with id == " + id);
+           // System.out.println("Retrieve: No record with id == " + id);
             return null;
         }
         return result.next;
@@ -86,13 +85,14 @@ public class HashBase implements Serializable {
         }
     }
 
-    void delete(String id) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    boolean delete(String id) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         DBRecord fatherRecord = find(id);
         if (fatherRecord == null) { // nothing to delete
-            System.out.println("Delete: There is no record with id == " + id);
-            return;
+           // System.out.println("Delete: There is no record with id == " + id);
+            return false;
         }
         fatherRecord.next = fatherRecord.next.next;
+        return true;
     }
 
 

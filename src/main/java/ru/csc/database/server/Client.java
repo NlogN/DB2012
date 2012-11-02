@@ -31,7 +31,6 @@ public class Client {
 
     public static void main(String[] args) throws IOException {
 
-
             Scanner in = new Scanner(System.in);
             while (in.hasNext()) {
                 String command = in.nextLine();

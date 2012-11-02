@@ -72,46 +72,35 @@ public class Router extends Server {
                 } else {
 
                     if (command.equals("exit")) {
-                        System.out.println("end.");
-                        // cluster.stop();
+                        out.println("end.");
                         perform("sh1", posts, out);
                         perform("sh2", posts, out);
                         perform("sh3", posts, out);
                         System.exit(0);
-
                     } else if (command.equals("ms1")) {
                         perform(command, posts, out);
-
                     } else if (command.equals("ms2")) {
                         perform(command, posts, out);
-
                     } else if (command.equals("ms3")) {
                         perform(command, posts, out);
-
                     } else if (command.equals("ms")) {
                         perform("ms1", posts, out);
                         perform("ms2", posts, out);
                         perform("ms3", posts, out);
-
                     } else if (command.equals("sh1")) {
-                        // cluster.sh1Stop();
                         perform(command, posts, out);
                     } else if (command.equals("sh2")) {
-                        // cluster.sh2Stop();
                         perform(command, posts, out);
                     } else if (command.equals("sh3")) {
-                        // cluster.sh3Stop();
                         perform(command, posts, out);
                     } else if (command.equals("flush")) {
                         perform("flush1", posts, out);
                         perform("flush2", posts, out);
                         perform("flush3", posts, out);
-
                     } else if (command.equals("load")) {
                         perform("load1", posts, out);
                         perform("load2", posts, out);
                         perform("load3", posts, out);
-
                     } else {
                         perform(command, posts, out);
                     }

@@ -47,22 +47,30 @@ public class ConsoleApp {
                 fileInputStream.close();
             }else{
                 if (operation.equals("add")) {
-                    base.create(record);
-
+                    boolean t = base.create(record);
+                    if(!t){
+                        out.println("Create: There is record with id == " + record.id +
+                                " , do you want to update?");
+                    }
                 } else if (operation.equals("update")) {
                     base.update(record);
 
                 } else if (operation.equals("get")) {
-                    out.println(base.retrieve(id));
-
+                    DBRecord rec =  base.retrieve(id);
+                    if(rec==null){
+                        out.println("Retrieve: No record with id == " + id);
+                    } else{
+                        out.println(rec);
+                    }
                 } else if (operation.equals("getall")) {
                     for (DBRecord dbRecord : base.retrieveAll()) {
                         out.println(dbRecord);
                     }
-
                 } else if (operation.equals("delete")) {
-                    base.delete(id);
-
+                  boolean t = base.delete(id);
+                  if(!t){
+                      out.println("Delete: There is no record with id == " + id);
+                  }
                 } else if (operation.equals("exit")) {
                     out.println("end.");
                     return base;
