@@ -32,8 +32,8 @@ public class Slave extends Server {
 
 
     private void stop() {
-        server.stop(0);
         System.out.println("server on port " + port + " stoped");
+        server.stop(0);
     }
 
 

@@ -24,6 +24,24 @@ public class Server {
     }
 
 
+    public static void main(String[] args) throws IOException {
+        if(args.length==2){
+            if(args[0].equals("master")){
+                Master master = new Master(Integer.parseInt(args[1]));
+            }
+            if(args[0].equals("slave")){
+                Slave slave = new Slave(Integer.parseInt(args[1]));
+            }
+            if(args[0].equals("router")){
+                Router router = new Router(Integer.parseInt(args[1]));
+            }
+        }else{
+            System.out.println("incorrect parameter");
+        }
+
+    }
+
+
     public static String replaser(String s){
         s = s.replaceAll("%3D","=");
         s = s.replaceAll("%2C",",");
@@ -46,20 +64,6 @@ public class Server {
             s = s.replaceAll(Character.toString((char) i), "\\$" + i + "\\$");
         }
         return s;
-    }
-
-    public static void main(String[] args) throws IOException {
-        if(args.length==2){
-            if(args[0].equals("master")){
-                Master master = new Master(Integer.parseInt(args[1]));
-            }
-            if(args[0].equals("slave")){
-                Slave slave = new Slave(Integer.parseInt(args[1]));
-            }
-        }else{
-            System.out.println("incorrect parameter");
-        }
-
     }
 
     public static int getSlavePort(String command) {

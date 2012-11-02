@@ -11,7 +11,18 @@ public class Cluster {
 //    Master[] masters;
 //    Slave[] slaves;
 //    int port;
-//
+
+    public static void main(String[] args) throws IOException {
+        Router router = new Router(Client.routerPort);
+        Master master1 = new Master(Server.mastersPorts[0]);
+        Master master2 = new Master(Server.mastersPorts[1]);
+        Master master3 = new Master(Server.mastersPorts[2]);
+        Slave slave1 = new Slave(Integer.parseInt("8001"));
+        Slave slave2 = new Slave(Integer.parseInt("8004"));
+        Slave slave3 = new Slave(Integer.parseInt("8007"));
+
+    }
+
 //    public Cluster(int port) throws IOException {
 //        this.port = port;
 //        int masterPort1 = port;
@@ -84,18 +95,5 @@ public class Cluster {
 //        System.out.println("Masters stoped.");
 //    }
 
-
-
-
-   public static void main(String[] args) throws IOException {
-       Router router = new Router(Client.routerPort);
-       Master master1 = new Master(Server.mastersPorts[0]);
-       Master master2 = new Master(Server.mastersPorts[1]);
-       Master master3 = new Master(Server.mastersPorts[2]);
-       Slave slave1 = new Slave(Integer.parseInt("8001"));
-       Slave slave2 = new Slave(Integer.parseInt("8004"));
-       Slave slave3 = new Slave(Integer.parseInt("8007"));
-
-    }
 
 }

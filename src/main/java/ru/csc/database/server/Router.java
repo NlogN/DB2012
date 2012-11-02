@@ -76,6 +76,7 @@ public class Router extends Server {
                         perform("sh1", posts, out);
                         perform("sh2", posts, out);
                         perform("sh3", posts, out);
+                        perform("stopR", posts, out);
                         System.exit(0);
                     } else if (command.equals("ms1")) {
                         perform(command, posts, out);
