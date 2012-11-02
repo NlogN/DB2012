@@ -2,8 +2,6 @@ package ru.csc.database.core;
 
 import org.junit.Assert;
 import org.junit.Test;
-import ru.csc.database.core.DBRecord;
-
 import java.io.*;
 import java.security.NoSuchAlgorithmException;
 
@@ -40,7 +38,7 @@ public class HashBaseTest {
 //        flush base
         ConsoleApp.perform("flush", hashBase, new PrintWriter(System.out));
 //        exit
-        ConsoleApp.perform("esk", hashBase, new PrintWriter(System.out));
+        ConsoleApp.perform("exit", hashBase, new PrintWriter(System.out));
 
         HashBase loadedHashBase = new HashBase();
 //        load base

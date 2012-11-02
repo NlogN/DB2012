@@ -64,19 +64,18 @@ public class ConsoleApp {
                     base.delete(id);
 
                 } else if (operation.equals("exit")) {
-                    System.out.println("end.");
+                    out.println("end.");
                     return base;
                 } else {
                     out.print("Unknown command. Known commands are: ");
                     for (String command : permittedOperations) {
                         out.print(command + ", ");
                     }
-                    System.out.println();
+                    out.println();
 
                 }
             }
         }
-
 
         return base;
     }

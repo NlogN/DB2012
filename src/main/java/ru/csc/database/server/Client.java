@@ -43,7 +43,7 @@ public class Client {
             Scanner in = new Scanner(System.in);
             while (in.hasNext()) {
                 String command = in.nextLine();
-                if (command.equals("esk")) {
+                if (command.equals("exit")) {
                     System.out.println("end.");
                    // cluster.stop();
                     perform("sh1", posts);
