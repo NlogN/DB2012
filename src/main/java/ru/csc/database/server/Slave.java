@@ -53,7 +53,7 @@ public class Slave extends Server {
             if(k!=-1){
                 String command = value.substring(k+1);
 
-                if (command.indexOf("sh") == 0) {
+                if (command.indexOf("stopsh") == 0) {
                     stop();
                 } else {
                     PrintWriter out = new PrintWriter(exc.getResponseBody());

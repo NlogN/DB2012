@@ -73,26 +73,26 @@ public class Router extends Server {
 
                     if (command.equals("exit")) {
                         out.println("end.");
-                        perform("sh1", posts, out);
-                        perform("sh2", posts, out);
-                        perform("sh3", posts, out);
+                        perform("stopsh1", posts, out);
+                        perform("stopsh2", posts, out);
+                        perform("stopsh3", posts, out);
                         perform("stopR", posts, out);
                         System.exit(0);
-                    } else if (command.equals("ms1")) {
+                    } else if (command.equals("stopm1")) {
                         perform(command, posts, out);
-                    } else if (command.equals("ms2")) {
+                    } else if (command.equals("stopm2")) {
                         perform(command, posts, out);
-                    } else if (command.equals("ms3")) {
+                    } else if (command.equals("stopm3")) {
                         perform(command, posts, out);
-                    } else if (command.equals("ms")) {
-                        perform("ms1", posts, out);
-                        perform("ms2", posts, out);
-                        perform("ms3", posts, out);
-                    } else if (command.equals("sh1")) {
+                    } else if (command.equals("stopm")) {
+                        perform("stopm1", posts, out);
+                        perform("stopm2", posts, out);
+                        perform("stopm3", posts, out);
+                    } else if (command.equals("stopsh1")) {
                         perform(command, posts, out);
-                    } else if (command.equals("sh2")) {
+                    } else if (command.equals("stopsh2")) {
                         perform(command, posts, out);
-                    } else if (command.equals("sh3")) {
+                    } else if (command.equals("stopsh3")) {
                         perform(command, posts, out);
                     } else if (command.equals("flush")) {
                         perform("flush1", posts, out);

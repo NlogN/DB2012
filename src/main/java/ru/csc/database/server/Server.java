@@ -88,22 +88,22 @@ public class Server {
         } else if (command.equals("load3")) {
             return 2;
         }
-        if (command.equals("ms1")) {
+        if (command.equals("stopm1")) {
             return 0;
         }
-        if (command.equals("ms2")) {
+        if (command.equals("stopm2")) {
             return 1;
         }
-        if (command.equals("ms3")) {
+        if (command.equals("stopm3")) {
             return 2;
         }
-        if (command.equals("sh1")) {
+        if (command.equals("stopsh1")) {
             return 0;
         }
-        if (command.equals("sh2")) {
+        if (command.equals("stopsh2")) {
             return 1;
         }
-        if (command.equals("sh3")) {
+        if (command.equals("stopsh3")) {
             return 2;
         }
 
