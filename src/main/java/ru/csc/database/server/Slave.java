@@ -81,12 +81,8 @@ public class Slave extends Server {
 //        System.out.println("server on port " + port + " stoped");
 //    }
 
-    public static void main(String[] args) throws IOException {
-  //      Slave slave = new Slave(Integer.parseInt("8007"));
-        if(args.length==1){
-            Slave slave = new Slave(Integer.parseInt(args[0]));
-        }else{
-            System.out.println("incorrect parameter");
-        }
-    }
+//    public static void main(String[] args) throws IOException {
+//       Slave slave = new Slave(Integer.parseInt("8007"));
+//
+//    }
 }

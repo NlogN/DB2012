@@ -3,6 +3,8 @@ package ru.csc.database.server;
 
 import ru.csc.database.core.HashBase;
 
+import java.io.IOException;
+
 
 /**
  * User: ilya
@@ -39,5 +41,19 @@ public class Server {
             s = s.replaceAll(Character.toString((char) i), "\\$" + i + "\\$");
         }
         return s;
+    }
+
+    public static void main(String[] args) throws IOException {
+        if(args.length==2){
+            if(args[0].equals("master")){
+                Master master = new Master(Integer.parseInt(args[1]));
+            }
+            if(args[0].equals("slave")){
+                Slave slave = new Slave(Integer.parseInt(args[1]));
+            }
+        }else{
+            System.out.println("incorrect parameter");
+        }
+
     }
 }

@@ -106,12 +106,8 @@ public class Master extends Server {
 
     }
 
-    public static void main(String[] args) throws IOException {
-      // Master master = new Master(Integer.parseInt("8006"));
-         if(args.length==1){
-             Master master = new Master(Integer.parseInt(args[0]));
-         }else{
-             System.out.println("incorrect parameter");
-         }
-    }
+//    public static void main(String[] args) throws IOException {
+//      Master master = new Master(Integer.parseInt("8006"));
+//
+//    }
 }
