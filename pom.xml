@@ -20,7 +20,7 @@
                             <mainClass>ru.csc.database.webinterface.ServerInitializer</mainClass>
                             <packageName>ru.csc.database.webinterface</packageName>
                             <addClasspath>true</addClasspath>
-                            <classpathPrefix>~/.m2</classpathPrefix>
+                            <classpathPrefix>${project.build.directory}/alternateLocation</classpathPrefix>
                             <classpathLayoutType>repository</classpathLayoutType>
                         </manifest>
                         <manifestEntries>
