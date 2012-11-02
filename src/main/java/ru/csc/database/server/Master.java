@@ -3,6 +3,7 @@ package ru.csc.database.server;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -60,12 +61,11 @@ public class Master extends Server {
                 if (command.indexOf("stopm") == 0) {
                     stop();
                 } else {
+                    PrintWriter out = new PrintWriter(exc.getResponseBody());
                     if (command.indexOf("stopsh") == 0) {
-                        updateSlave(command);
+                        updateSlave(command,out);
                         stop();
                     } else {
-
-                        PrintWriter out = new PrintWriter(exc.getResponseBody());
 
                         try {
                             base = ConsoleApp.perform(command, base, out);
@@ -75,18 +75,18 @@ public class Master extends Server {
                             e.printStackTrace();
                         }
 
-                        if (command.indexOf("get") != 0 && command.indexOf("flush") != 0) {
-                            updateSlave(command);
+                        if (command.indexOf("get(") != 0 && command.indexOf("flush") != 0) {
+                            updateSlave(command,out);
                         }
-                        out.close();
                     }
+                    out.close();
                 }
             }
             exc.close();
         }
 
 
-        public void updateSlave(String command) throws IOException {
+        public void updateSlave(String command, PrintWriter out) throws IOException {
             HttpClient client = new DefaultHttpClient();
             command = translateRuText(command);
 
@@ -97,10 +97,12 @@ public class Master extends Server {
             nameValuePairs.add(new BasicNameValuePair("command", command));
             post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
-            //System.out.println(command + "to slave");
-
-            client.execute(post);
-
+            HttpResponse response = client.execute(post);
+            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            String line;
+            while ((line = rd.readLine()) != null) {
+                out.println(line);
+            }
         }
 
 

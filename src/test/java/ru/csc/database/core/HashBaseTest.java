@@ -31,7 +31,9 @@ public class HashBaseTest {
     @Test
     public void testGetAll() throws NoSuchAlgorithmException, UnsupportedEncodingException {
             HashBase hashBase = new HashBase(10);
+            DBRecord DB_RECORD1 = new DBRecord("21", new String[]{"artemij11", "chugreev11"});
             hashBase.create(DB_RECORD);
+            hashBase.create(DB_RECORD1);
             ConsoleApp.getAll(hashBase);
     }
 

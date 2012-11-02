@@ -63,8 +63,9 @@ public class ConsoleApp {
                         out.println(rec);
                     }
                 } else if (operation.equals("getall")) {
+                  //  out.println(1);
                     for (DBRecord dbRecord : base.retrieveAll()) {
-                        out.println(dbRecord);
+                        out.println(dbRecord.toString());
                     }
                 } else if (operation.equals("delete")) {
                   boolean t = base.delete(id);

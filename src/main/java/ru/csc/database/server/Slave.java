@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import ru.csc.database.core.ConsoleApp;
+import ru.csc.database.core.DBRecord;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -57,16 +58,23 @@ public class Slave extends Server {
                     stop();
                 } else {
                     PrintWriter out = new PrintWriter(exc.getResponseBody());
-
-
-                    try {
-                        base = ConsoleApp.perform(command, base, out);
-                    } catch (NoSuchAlgorithmException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
-
+//                    if(command.equals("getall")){
+//                        try {
+//                            for (DBRecord dbRecord : base.retrieveAll()) {
+//                                out.println("#"+dbRecord.toString());
+//                            }
+//                        } catch (NoSuchAlgorithmException e) {
+//                            e.printStackTrace();
+//                        }
+//                    } else{
+                        try {
+                            base = ConsoleApp.perform(command, base, out);
+                        } catch (NoSuchAlgorithmException e) {
+                            e.printStackTrace();
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+//                    }
 
                     out.close();
                 }
@@ -75,13 +83,5 @@ public class Slave extends Server {
 
     }
 
-//    public void stop() {
-//        server.stop(0);
-//        System.out.println("server on port " + port + " stoped");
-//    }
 
-//    public static void main(String[] args) throws IOException {
-//       Slave slave = new Slave(Integer.parseInt("8007"));
-//
-//    }
 }
