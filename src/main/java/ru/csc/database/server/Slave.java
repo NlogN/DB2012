@@ -48,13 +48,12 @@ public class Slave extends Server {
 
             value = replaser(value);
             value = retranslateRuText(value);
-            System.out.println(value);
+
             int k = value.indexOf("=");
             if(k!=-1){
                 String command = value.substring(k+1);
-                System.out.println(command);
+
                 if (command.indexOf("sh") == 0) {
-                    System.out.println(command.indexOf("sh") == 0);
                     stop();
                 } else {
                     PrintWriter out = new PrintWriter(exc.getResponseBody());

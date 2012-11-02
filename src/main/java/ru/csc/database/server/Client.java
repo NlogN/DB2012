@@ -26,11 +26,11 @@ import java.util.regex.Pattern;
 
 public class Client {
     private static HttpClient client = new DefaultHttpClient();
-
+    static int routerPort = 8010;
 
 
     public static void main(String[] args) throws IOException {
-           int routerPort = 8010;
+
 
             Scanner in = new Scanner(System.in);
             while (in.hasNext()) {
@@ -72,8 +72,8 @@ public class Client {
     public static boolean isCorrect(String command) {
         Pattern p1 = Pattern.compile("^((get)|(delete)|(add))[(][A-Za-zА-Яа-я]+[)]$");
         Pattern p2 = Pattern.compile("^((add)|(update))[(][A-Za-zА-Яа-я]+,[+]{0,1}[0-9]+[)]$");
-        Pattern p3 = Pattern.compile("^((flush)|(load)|)[0-9]{1}$");
-        Pattern p4 = Pattern.compile("^getall$");
+        Pattern p3 = Pattern.compile("^((flush)|(load)|)[0-9]{0,1}$");
+        Pattern p4 = Pattern.compile("^((getall)|(stopR))$");
         Pattern p5 = Pattern.compile("^((ms)|(sh))[1-3]{0,1}$");
         Matcher m1 = p1.matcher(command);
         Matcher m2 = p2.matcher(command);

@@ -56,81 +56,86 @@ public class Router extends Server {
             value = replaser(value);
             value = retranslateRuText(value);
 
-            if (value.equals("stopR")) {
-                stop();
-            } else {
-                HttpPost[] posts = new HttpPost[mastersPorts.length];
-                for (int i = 0; i < posts.length; i++) {
-                    posts[i] = new HttpPost(defaultHttp + mastersPorts[i] + "/");
-                }
+            HttpPost[] posts = new HttpPost[mastersPorts.length];
+            for (int i = 0; i < posts.length; i++) {
+                posts[i] = new HttpPost(defaultHttp + mastersPorts[i] + "/");
+            }
 
-                int k = value.indexOf("=");
-                if (k != -1) {
-                    String command = value.substring(k + 1);
+            PrintWriter out = new PrintWriter(exc.getResponseBody());
+
+            int k = value.indexOf("=");
+            if (k != -1) {
+                String command = value.substring(k + 1);
+
+                if (command.equals("stopR")) {
+                    stop();
+                } else {
 
                     if (command.equals("exit")) {
                         System.out.println("end.");
                         // cluster.stop();
-                        perform("sh1", posts);
-                        perform("sh2", posts);
-                        perform("sh3", posts);
+                        perform("sh1", posts, out);
+                        perform("sh2", posts, out);
+                        perform("sh3", posts, out);
                         System.exit(0);
 
                     } else if (command.equals("ms1")) {
-                        perform(command, posts);
+                        perform(command, posts, out);
 
                     } else if (command.equals("ms2")) {
-                        perform(command, posts);
+                        perform(command, posts, out);
 
                     } else if (command.equals("ms3")) {
-                        perform(command, posts);
+                        perform(command, posts, out);
 
                     } else if (command.equals("ms")) {
-                        perform("ms1", posts);
-                        perform("ms2", posts);
-                        perform("ms3", posts);
+                        perform("ms1", posts, out);
+                        perform("ms2", posts, out);
+                        perform("ms3", posts, out);
 
                     } else if (command.equals("sh1")) {
                         // cluster.sh1Stop();
-                        perform(command, posts);
+                        perform(command, posts, out);
                     } else if (command.equals("sh2")) {
                         // cluster.sh2Stop();
-                        perform(command, posts);
+                        perform(command, posts, out);
                     } else if (command.equals("sh3")) {
                         // cluster.sh3Stop();
-                        perform(command, posts);
+                        perform(command, posts, out);
                     } else if (command.equals("flush")) {
-                        perform("flush1", posts);
-                        perform("flush2", posts);
-                        perform("flush3", posts);
+                        perform("flush1", posts, out);
+                        perform("flush2", posts, out);
+                        perform("flush3", posts, out);
 
                     } else if (command.equals("load")) {
-                        perform("load1", posts);
-                        perform("load2", posts);
-                        perform("load3", posts);
+                        perform("load1", posts, out);
+                        perform("load2", posts, out);
+                        perform("load3", posts, out);
 
                     } else {
-                        perform(command, posts);
+                        perform(command, posts, out);
                     }
                 }
             }
+
+            out.close();
+            exc.close();
         }
 
 
-        void perform(String command, HttpPost[] posts) throws IOException {
-
+        void perform(String command, HttpPost[] posts, PrintWriter out) throws IOException {
             command = translateRuText(command);
             if (command.indexOf("getall") == 0) {
                 for (HttpPost post : posts) {
-                    balancer(command, post);
+                    balancer(command, post, out);
                 }
             } else {
-                balancer(command, posts[getMasterPortInd(command)]);
+                balancer(command, posts[getMasterPortInd(command)], out);
             }
 
         }
 
-        void balancer(String command, HttpPost post) throws IOException {
+        void balancer(String command, HttpPost post, PrintWriter out) throws IOException {
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
             nameValuePairs.add(new BasicNameValuePair("command", command));
             HttpClient client = new DefaultHttpClient();
@@ -141,7 +146,7 @@ public class Router extends Server {
                 BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
                 String line;
                 while ((line = rd.readLine()) != null) {
-                    System.out.println(line);
+                    out.println(line);
                 }
             } catch (HttpHostConnectException e) { // если мастер упал
 
@@ -156,15 +161,15 @@ public class Router extends Server {
                         BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
                         String line;
                         while ((line = rd.readLine()) != null) {
-                            System.out.println(line);
+                            out.println(line);
                         }
                     } catch (HttpHostConnectException e1) {
-                        System.out.println("Required server is unavailable.");
+                        out.println("Required server is unavailable.");
                     }
 
 
                 } else {
-                    System.out.println("Required server is unavailable.");
+                    out.println("Required server is unavailable.");
                 }
 
             }
