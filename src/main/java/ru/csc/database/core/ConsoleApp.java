@@ -88,6 +88,11 @@ public class ConsoleApp {
         return base;
     }
 
+    public static void getAll(HashBase base) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        for (DBRecord dbRecord : base.retrieveAll()) {
+            System.out.println(dbRecord);
+        }
+    }
 
 
 }
