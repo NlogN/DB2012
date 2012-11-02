@@ -24,6 +24,24 @@ public class Server {
     }
 
 
+    public static void main(String[] args) throws IOException {
+        if(args.length==2){
+            if(args[0].equals("master")){
+                Master master = new Master(Integer.parseInt(args[1]));
+            }
+            if(args[0].equals("slave")){
+                Slave slave = new Slave(Integer.parseInt(args[1]));
+            }
+            if(args[0].equals("router")){
+                Router router = new Router(Integer.parseInt(args[1]));
+            }
+        }else{
+            System.out.println("incorrect parameter");
+        }
+
+    }
+
+
     public static String replaser(String s){
         s = s.replaceAll("%3D","=");
         s = s.replaceAll("%2C",",");
@@ -48,20 +66,6 @@ public class Server {
         return s;
     }
 
-    public static void main(String[] args) throws IOException {
-        if(args.length==2){
-            if(args[0].equals("master")){
-                Master master = new Master(Integer.parseInt(args[1]));
-            }
-            if(args[0].equals("slave")){
-                Slave slave = new Slave(Integer.parseInt(args[1]));
-            }
-        }else{
-            System.out.println("incorrect parameter");
-        }
-
-    }
-
     public static int getSlavePort(String command) {
         return getMasterPort(command) + 1;
     }
@@ -84,22 +88,22 @@ public class Server {
         } else if (command.equals("load3")) {
             return 2;
         }
-        if (command.equals("ms1")) {
+        if (command.equals("stopm1")) {
             return 0;
         }
-        if (command.equals("ms2")) {
+        if (command.equals("stopm2")) {
             return 1;
         }
-        if (command.equals("ms3")) {
+        if (command.equals("stopm3")) {
             return 2;
         }
-        if (command.equals("sh1")) {
+        if (command.equals("stopsh1")) {
             return 0;
         }
-        if (command.equals("sh2")) {
+        if (command.equals("stopsh2")) {
             return 1;
         }
-        if (command.equals("sh3")) {
+        if (command.equals("stopsh3")) {
             return 2;
         }
 

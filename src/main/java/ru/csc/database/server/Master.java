@@ -57,10 +57,10 @@ public class Master extends Server {
             int k = value.indexOf("=");
             if (k != -1) {
                 String command = value.substring(k + 1);
-                if (command.indexOf("ms") == 0) {
+                if (command.indexOf("stopm") == 0) {
                     stop();
                 } else {
-                    if (command.indexOf("sh") == 0) {
+                    if (command.indexOf("stopsh") == 0) {
                         updateSlave(command);
                         stop();
                     } else {

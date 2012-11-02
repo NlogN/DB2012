@@ -29,6 +29,14 @@ public class HashBaseTest {
     }
 
     @Test
+    public void testGetAll() throws NoSuchAlgorithmException, UnsupportedEncodingException {
+            HashBase hashBase = new HashBase(10);
+            hashBase.create(DB_RECORD);
+            ConsoleApp.getAll(hashBase);
+    }
+
+
+    @Test
     public void flushLoadTest() throws NoSuchAlgorithmException, IOException, ClassNotFoundException {
         final HashBase hashBase = new HashBase();
         final String surname = "chugreev";
