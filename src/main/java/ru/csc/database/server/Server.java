@@ -4,6 +4,8 @@ package ru.csc.database.server;
 import ru.csc.database.core.HashBase;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 
 
 /**
@@ -13,13 +15,16 @@ import java.io.IOException;
 
 public class Server {
     protected HashBase base;
+    public static String defaultHttp = "http://127.0.0.1:";
+    static int port1 = 8000;
+    static int[] mastersPorts = {port1, port1 + 3, port1 + 6};
 
     Server() {
         base = new HashBase();
     }
 
 
-    public String replaser(String s){
+    public static String replaser(String s){
         s = s.replaceAll("%3D","=");
         s = s.replaceAll("%2C",",");
         s = s.replaceAll("%2B","+");
@@ -55,5 +60,74 @@ public class Server {
             System.out.println("incorrect parameter");
         }
 
+    }
+
+    public static int getSlavePort(String command) {
+        return getMasterPort(command) + 1;
+    }
+
+    public static int getMasterPort(String command) {
+        return mastersPorts[getMasterPortInd(command)];
+    }
+
+    public static int getMasterPortInd(String command) {
+        if (command.equals("flush1")) {
+            return 0;
+        } else if (command.equals("flush2")) {
+            return 1;
+        } else if (command.equals("flush3")) {
+            return 2;
+        } else if (command.equals("load1")) {
+            return 0;
+        } else if (command.equals("load2")) {
+            return 1;
+        } else if (command.equals("load3")) {
+            return 2;
+        }
+        if (command.equals("ms1")) {
+            return 0;
+        }
+        if (command.equals("ms2")) {
+            return 1;
+        }
+        if (command.equals("ms3")) {
+            return 2;
+        }
+        if (command.equals("sh1")) {
+            return 0;
+        }
+        if (command.equals("sh2")) {
+            return 1;
+        }
+        if (command.equals("sh3")) {
+            return 2;
+        }
+
+
+        return hash(command, 3);
+    }
+
+    public static int hash(String command, int maxHashValue) {
+        int ind1 = command.indexOf("(");
+        int ind2 = command.indexOf(",");
+        if (ind2 == -1) {
+            ind2 = command.indexOf(")");
+        }
+        if (ind1 < ind2) {
+            String key = command.substring(ind1 + 1, ind2);
+
+            int res = 0;
+
+            try {
+                res = HashBase.hash(key, maxHashValue);
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
+            return res;
+        }
+        return 0;
     }
 }

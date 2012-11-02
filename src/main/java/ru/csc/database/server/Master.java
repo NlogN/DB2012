@@ -90,9 +90,9 @@ public class Master extends Server {
             HttpClient client = new DefaultHttpClient();
             command = translateRuText(command);
 
-            int slavePort = Client.getSlavePort(command);
+            int slavePort = getSlavePort(command);
 
-            HttpPost post = new HttpPost(Client.defaultHttp + slavePort + "/");
+            HttpPost post = new HttpPost(defaultHttp + slavePort + "/");
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
             nameValuePairs.add(new BasicNameValuePair("command", command));
             post.setEntity(new UrlEncodedFormEntity(nameValuePairs));

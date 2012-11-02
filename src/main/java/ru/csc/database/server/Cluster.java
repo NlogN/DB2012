@@ -7,7 +7,7 @@ import java.io.IOException;
  * User: ilya
  * Date: 25.10.12
  */
-//public class Cluster {
+public class Cluster {
 //    Master[] masters;
 //    Slave[] slaves;
 //    int port;
@@ -83,5 +83,19 @@ import java.io.IOException;
 //        }
 //        System.out.println("Masters stoped.");
 //    }
-//
-//}
+
+
+
+
+   public static void main(String[] args) throws IOException {
+       Router router = new Router(Integer.parseInt("8010"));
+       Master master1 = new Master(Integer.parseInt("8000"));
+       Master master2 = new Master(Integer.parseInt("8003"));
+       Master master3 = new Master(Integer.parseInt("8006"));
+       Slave slave1 = new Slave(Integer.parseInt("8001"));
+       Slave slave2 = new Slave(Integer.parseInt("8004"));
+       Slave slave3 = new Slave(Integer.parseInt("8007"));
+
+    }
+
+}

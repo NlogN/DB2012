@@ -25,112 +25,24 @@ import java.util.regex.Pattern;
 
 
 public class Client {
-    public static String defaultHttp = "http://127.0.0.1:";
     private static HttpClient client = new DefaultHttpClient();
-    static int port = 8000;
-    static int[] mastersPorts = {port, port + 3, port + 6};
+
+
 
     public static void main(String[] args) throws IOException {
+           int routerPort = 8010;
 
-       //Cluster cluster = new Cluster(port);
-
-        HttpPost[] posts = new HttpPost[mastersPorts.length];
-        for (int i = 0; i < posts.length; i++) {
-            posts[i] = new HttpPost(defaultHttp + mastersPorts[i] + "/");
-        }
-
-        try {
             Scanner in = new Scanner(System.in);
             while (in.hasNext()) {
                 String command = in.nextLine();
-                if (command.equals("exit")) {
-                    System.out.println("end.");
-                   // cluster.stop();
-                    perform("sh1", posts);
-                    perform("sh2", posts);
-                    perform("sh3", posts);
-                    System.exit(0);
+                command = command.replaceAll(" ", "");
+                if (isCorrect(command)) {
+                    command = translateRuText(command);
 
-                } else if (command.equals("ms1")) {
-                    perform(command, posts);
+                    List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+                    nameValuePairs.add(new BasicNameValuePair("command", command));
 
-                } else if (command.equals("ms2")) {
-                    perform(command, posts);
-
-                } else if (command.equals("ms3")) {
-                    perform(command, posts);
-
-                } else if (command.equals("ms")) {
-                    perform("ms1", posts);
-                    perform("ms2", posts);
-                    perform("ms3", posts);
-
-                } else if (command.equals("sh1")) {
-                   // cluster.sh1Stop();
-                    perform(command, posts);
-                } else if (command.equals("sh2")) {
-                   // cluster.sh2Stop();
-                    perform(command, posts);
-                } else if (command.equals("sh3")) {
-                   // cluster.sh3Stop();
-                    perform(command, posts);
-                } else if (command.equals("flush")) {
-                    perform("flush1", posts);
-                    perform("flush2", posts);
-                    perform("flush3", posts);
-
-                } else if (command.equals("load")) {
-                    perform("load1", posts);
-                    perform("load2", posts);
-                    perform("load3", posts);
-
-                } else {
-                    perform(command, posts);
-                }
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-     //   cluster.stop();
-
-    }
-
-    static void perform(String command, HttpPost[] posts) throws IOException {
-        command = command.replaceAll(" ", "");
-        if (isCorrect(command)) {
-            command = translateRuText(command);
-            if (command.indexOf("getall") == 0) {
-                for (HttpPost post : posts) {
-                    balancer(command, post);
-                }
-            } else {
-                balancer(command, posts[getMasterPortInd(command)]);
-            }
-        } else{
-            System.out.println("Unknown command.");
-        }
-    }
-
-    static void balancer(String command, HttpPost post) throws IOException {
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-        nameValuePairs.add(new BasicNameValuePair("command", command));
-
-        try {
-            post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-            HttpResponse response = client.execute(post);
-            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-            String line;
-            while ((line = rd.readLine()) != null) {
-                System.out.println(line);
-            }
-        } catch (HttpHostConnectException e) { // если мастер упал
-
-                if (command.indexOf("get") == 0 || command.indexOf("flush") == 0 || command.indexOf("load") == 0) {
-
-                    int slavePort = getSlavePort(command);
-                    HttpPost post1 = new HttpPost(defaultHttp + slavePort + "/");
+                    HttpPost post1 = new HttpPost(Server.defaultHttp + routerPort  + "/");
                     post1.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
                     try {
@@ -145,81 +57,15 @@ public class Client {
                     }
 
 
-                } else {
-                    System.out.println("Required server is unavailable.");
+                } else{
+                    System.out.println("incorrect command.");
                 }
-
-        }
-
-    }
-
-    public static int getSlavePort(String command) {
-        return getMasterPort(command) + 1;
-    }
-
-    public static int getMasterPort(String command) {
-        return mastersPorts[getMasterPortInd(command)];
-    }
-
-    public static int getMasterPortInd(String command) {
-        if (command.equals("flush1")) {
-            return 0;
-        } else if (command.equals("flush2")) {
-            return 1;
-        } else if (command.equals("flush3")) {
-            return 2;
-        } else if (command.equals("load1")) {
-            return 0;
-        } else if (command.equals("load2")) {
-            return 1;
-        } else if (command.equals("load3")) {
-            return 2;
-        }
-        if (command.equals("ms1")) {
-            return 0;
-        }
-        if (command.equals("ms2")) {
-            return 1;
-        }
-        if (command.equals("ms3")) {
-            return 2;
-        }
-        if (command.equals("sh1")) {
-            return 0;
-        }
-        if (command.equals("sh2")) {
-            return 1;
-        }
-        if (command.equals("sh3")) {
-            return 2;
-        }
+            }
 
 
-        return hash(command, 3);
-    }
 
-    public static int hash(String command, int maxHashValue) {
-        int ind1 = command.indexOf("(");
-        int ind2 = command.indexOf(",");
-        if (ind2 == -1) {
-            ind2 = command.indexOf(")");
-        }
-        if (ind1 < ind2) {
-            String key = command.substring(ind1 + 1, ind2);
 
-            int res = 0;
 
-                try {
-                    res = HashBase.hash(key, maxHashValue);
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-
-            return res;
-        }
-        return 0;
     }
 
 
