@@ -141,10 +141,11 @@ public class Router extends Server {
                 try {
                     toMaster(command, posts, out, client, nameValuePairs);
                 } catch (HttpHostConnectException e) { // если мастер упал
+                    out.println("Required server is unavailable.");
                     try {
                         toSlave(command, out, client, nameValuePairs);
                     } catch (HttpHostConnectException e1) {
-                        System.out.println("Required server is unavailable.");
+                        out.println("Required server is unavailable.");
                     }
                 }
             }
@@ -164,24 +165,18 @@ public class Router extends Server {
         }
 
         void toSlave(String command, PrintWriter out, HttpClient client, List<NameValuePair> nameValuePairs) throws IOException {
-            if (command.indexOf("get") == 0 || command.indexOf("flush") == 0 || command.indexOf("load") == 0 || command.indexOf("getall") == 0|| command.indexOf("stopsh") == 0) {
+            if (command.indexOf("get") == 0 || command.indexOf("flush") == 0 || command.indexOf("load") == 0 || command.indexOf("getall") == 0 || command.indexOf("stopsh") == 0) {
 
                 int slavePort = getSlavePort(command);
                 HttpPost post1 = new HttpPost(defaultHttp + slavePort + "/");
                 post1.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
-                try {
-                    HttpResponse response = client.execute(post1);
-                    BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-                    String line;
-                    while ((line = rd.readLine()) != null) {
-                        out.println(line);
-                    }
-                } catch (HttpHostConnectException e1) {
-                    out.println("Required server is unavailable.");
+                HttpResponse response = client.execute(post1);
+                BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                String line;
+                while ((line = rd.readLine()) != null) {
+                    out.println(line);
                 }
-
-
             }
         }
 
