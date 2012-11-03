@@ -102,7 +102,7 @@ public class Router extends Server {
                         perform("load1", posts, out);
                         perform("load2", posts, out);
                         perform("load3", posts, out);
-                    } else  if (command.equals("getall")) {
+                    } else if (command.equals("getall")) {
                         perform("getall1", posts, out);
                         perform("getall2", posts, out);
                         perform("getall3", posts, out);
@@ -121,23 +121,13 @@ public class Router extends Server {
         void perform(String command, HttpPost[] posts, PrintWriter out) throws IOException {
             command = translateRuText(command);
 
-            balancer(command, posts[getMasterPortInd(command)], out);
-        }
-
-        void balancer(String command, HttpPost post, PrintWriter out) throws IOException {
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
             nameValuePairs.add(new BasicNameValuePair("command", command));
             HttpClient client = new DefaultHttpClient();
 
-            if(command.indexOf("getall") == 0){
+            if (command.indexOf("getall") == 0) {
                 try {
-                    post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                    HttpResponse response = client.execute(post);
-                    BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-                    String line;
-                    while ((line = rd.readLine()) != null) {
-                        out.println(line);
-                    }
+                    toMaster(command, posts, out, client, nameValuePairs);
                 } catch (HttpHostConnectException e) {
                     System.out.println("Required server is unavailable.");
                 }
@@ -147,24 +137,34 @@ public class Router extends Server {
                     System.out.println("Required server is unavailable.");
                 }
 
-            }else{
+            } else {
                 try {
-                    post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                    HttpResponse response = client.execute(post);
-                    BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-                    String line;
-                    while ((line = rd.readLine()) != null) {
-                        out.println(line);
-                    }
+                    toMaster(command, posts, out, client, nameValuePairs);
                 } catch (HttpHostConnectException e) { // если мастер упал
-                    toSlave(command,out,client,nameValuePairs);
+                    try {
+                        toSlave(command, out, client, nameValuePairs);
+                    } catch (HttpHostConnectException e1) {
+                        System.out.println("Required server is unavailable.");
+                    }
                 }
             }
 
         }
 
+        void toMaster(String command, HttpPost[] posts, PrintWriter out, HttpClient client, List<NameValuePair> nameValuePairs) throws IOException {
+            int masterPort = getMasterPortInd(command);
+            HttpPost post = posts[masterPort];
+            post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            HttpResponse response = client.execute(post);
+            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            String line;
+            while ((line = rd.readLine()) != null) {
+                out.println(line);
+            }
+        }
+
         void toSlave(String command, PrintWriter out, HttpClient client, List<NameValuePair> nameValuePairs) throws IOException {
-            if (command.indexOf("get") == 0 || command.indexOf("flush") == 0 || command.indexOf("load") == 0|| command.indexOf("getall") == 0) {
+            if (command.indexOf("get") == 0 || command.indexOf("flush") == 0 || command.indexOf("load") == 0 || command.indexOf("getall") == 0) {
 
                 int slavePort = getSlavePort(command);
                 HttpPost post1 = new HttpPost(defaultHttp + slavePort + "/");
