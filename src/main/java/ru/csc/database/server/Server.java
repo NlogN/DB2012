@@ -4,8 +4,7 @@ package ru.csc.database.server;
 import ru.csc.database.core.HashBase;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
+import java.io.PrintWriter;
 
 
 /**
@@ -27,13 +26,16 @@ public class Server {
     public static void main(String[] args) throws IOException {
         if(args.length==2){
             if(args[0].equals("master")){
-                Master master = new Master(Integer.parseInt(args[1]));
+                Master master = new Master(Integer.parseInt(args[1]),
+                        new PrintWriter(System.out));
             }
             if(args[0].equals("slave")){
-                Slave slave = new Slave(Integer.parseInt(args[1]));
+                Slave slave = new Slave(Integer.parseInt(args[1]),
+                        new PrintWriter(System.out));
             }
             if(args[0].equals("router")){
-                Router router = new Router(Integer.parseInt(args[1]));
+                Router router = new Router(Integer.parseInt(args[1]),
+                        new PrintWriter(System.out));
             }
         }else{
             System.out.println("incorrect parameter");
@@ -127,18 +129,7 @@ public class Server {
         }
         if (ind1 < ind2) {
             String key = command.substring(ind1 + 1, ind2);
-
-            int res = 0;
-
-            try {
-                res = HashBase.hash(key, maxHashValue);
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-
-            return res;
+            return key.hashCode() % maxHashValue;
         }
         return 0;
     }

@@ -3,7 +3,6 @@ package ru.csc.database.server;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -25,21 +24,22 @@ import java.util.List;
 public class Master extends Server {
     private HttpServer server;
     private int port;
+    private final PrintWriter out;
 
-
-    public Master(int port) throws IOException {
+    public Master(int port, PrintWriter out) throws IOException {
         super();
+        this.out = out;
         this.port = port;
         server = HttpServer.create(new InetSocketAddress(port), 10);
         server.createContext("/", new MyHandler());
         server.start();
-        System.out.println("server on port " + port + " started");
+        out.println("master on port " + port + " started");
     }
 
 
     private void stop() {
         server.stop(0);
-        System.out.println("server on port " + port + " stoped");
+        out.println("master on port " + port + " stoped");
     }
 
 

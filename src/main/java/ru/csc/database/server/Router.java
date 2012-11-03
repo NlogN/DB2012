@@ -11,12 +11,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import ru.csc.database.core.ConsoleApp;
-import ru.csc.database.core.HashBase;
 
 import java.io.*;
 import java.net.InetSocketAddress;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,21 +24,26 @@ import java.util.List;
 public class Router extends Server {
     private HttpServer server;
     private int port;
+    private final PrintWriter out;
 
 
-    public Router(int port) throws IOException {
+    public Router(int port, PrintWriter out) throws IOException {
         super();
+        this.out = out;
         this.port = port;
         server = HttpServer.create(new InetSocketAddress(port), 10);
         server.createContext("/", new MyHandler());
         server.start();
-        System.out.println("server on port " + port + " started");
+        out.println("router on port " + port + " started");
+        out.flush();
     }
 
 
     private void stop() {
         server.stop(0);
-        System.out.println("server on port " + port + " stoped");
+        out.println("router on port " + port + " stoped");
+        out.flush();
+        System.exit(0);
     }
 
 
@@ -72,12 +74,14 @@ public class Router extends Server {
                 } else {
 
                     if (command.equals("exit")) {
-                        out.println("end.");
+
                         perform("stopsh1", posts, out);
                         perform("stopsh2", posts, out);
                         perform("stopsh3", posts, out);
-                        perform("stopR", posts, out);
-                        System.exit(0);
+
+                        //perform("stopR", posts, out);
+                        stop();
+
                     } else if (command.equals("stopm1")) {
                         perform(command, posts, out);
                     } else if (command.equals("stopm2")) {
@@ -129,27 +133,28 @@ public class Router extends Server {
                 try {
                     toMaster(command, posts, out, client, nameValuePairs);
                 } catch (HttpHostConnectException e) {
-                    System.out.println("Required server is unavailable.");
+                    out.println("Required master is unavailable.");
+
                 }
                 try {
                     toSlave(command, out, client, nameValuePairs);
                 } catch (HttpHostConnectException e) {
-                    System.out.println("Required server is unavailable.");
+                    out.println("Required slave is unavailable.");
                 }
 
             } else {
                 try {
                     toMaster(command, posts, out, client, nameValuePairs);
                 } catch (HttpHostConnectException e) { // если мастер упал
-                    out.println("Required server is unavailable.");
+                    out.println("Required master is unavailable.");
                     try {
                         toSlave(command, out, client, nameValuePairs);
                     } catch (HttpHostConnectException e1) {
-                        out.println("Required server is unavailable.");
+                        out.println("Required slave is unavailable.");
                     }
                 }
             }
-
+        out.flush();
         }
 
         void toMaster(String command, HttpPost[] posts, PrintWriter out, HttpClient client, List<NameValuePair> nameValuePairs) throws IOException {
@@ -162,6 +167,7 @@ public class Router extends Server {
             while ((line = rd.readLine()) != null) {
                 out.println(line);
             }
+            out.flush();
         }
 
         void toSlave(String command, PrintWriter out, HttpClient client, List<NameValuePair> nameValuePairs) throws IOException {
@@ -178,6 +184,7 @@ public class Router extends Server {
                     out.println(line);
                 }
             }
+            out.flush();
         }
 
 

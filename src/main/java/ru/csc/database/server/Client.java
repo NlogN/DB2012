@@ -1,6 +1,5 @@
 package ru.csc.database.server;
 
-import ru.csc.database.core.HashBase;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -11,7 +10,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.*;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -27,6 +25,7 @@ import java.util.regex.Pattern;
 public class Client {
     private static HttpClient client = new DefaultHttpClient();
     static int routerPort = 8010;
+    private static final PrintWriter out = new PrintWriter(System.out);
 
 
     public static void main(String[] args) throws IOException {
@@ -49,12 +48,15 @@ public class Client {
                         BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
                         String line;
                         while ((line = rd.readLine()) != null) {
-                            System.out.println(line);
+                            out.println(line);
                         }
                     } catch (HttpHostConnectException e1) {
-                        System.out.println("Required server is unavailable.");
+                        out.println("Router is unavailable.");
                     }
-
+                    if (command.equals("exit")) {
+                        out.println("client is stopped.");
+                        System.exit(0);
+                    }
 
                 } else{
                     System.out.println("incorrect command.");
