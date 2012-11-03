@@ -63,7 +63,7 @@ public class Master extends Server {
                 } else {
                     PrintWriter out = new PrintWriter(exc.getResponseBody());
                     if (command.indexOf("stopsh") == 0) {
-                        updateSlave(command);
+                      //  updateSlave(command);
                         stop();
                     } else {
                         if(command.indexOf("getall") == 0){

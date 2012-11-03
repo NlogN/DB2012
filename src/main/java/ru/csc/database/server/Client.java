@@ -68,13 +68,15 @@ public class Client {
         Pattern p2 = Pattern.compile("^((add)|(update))[(][A-Za-zА-Яа-я]+,[+]{0,1}[0-9]+[)]$");
         Pattern p3 = Pattern.compile("^((flush)|(load)|)[0-9]{0,1}$");
         Pattern p4 = Pattern.compile("^((getall)|(stopR)|(exit))$");
-        Pattern p5 = Pattern.compile("^((stopm)|(stopsh))[1-3]{0,1}$");
+        Pattern p5 = Pattern.compile("^(stopm)[1-3]{0,1}$");
+        Pattern p6 = Pattern.compile("^(stopsh)[1-3]{1}$");
         Matcher m1 = p1.matcher(command);
         Matcher m2 = p2.matcher(command);
         Matcher m3 = p3.matcher(command);
         Matcher m4 = p4.matcher(command);
         Matcher m5 = p5.matcher(command);
-        return m1.matches()||m2.matches()||m3.matches()||m4.matches()||m5.matches();
+        Matcher m6 = p6.matcher(command);
+        return m1.matches()||m2.matches()||m3.matches()||m4.matches()||m5.matches()||m6.matches();
     }
 
     private static String translateRuText(String s) {
