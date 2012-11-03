@@ -58,15 +58,13 @@ public class Slave extends Server {
                     stop();
                 } else {
                     PrintWriter out = new PrintWriter(exc.getResponseBody());
-//                    if(command.equals("getall")){
-//                        try {
-//                            for (DBRecord dbRecord : base.retrieveAll()) {
-//                                out.println("#"+dbRecord.toString());
-//                            }
-//                        } catch (NoSuchAlgorithmException e) {
-//                            e.printStackTrace();
-//                        }
-//                    } else{
+                    if(command.indexOf("getall") == 0){
+                        try {
+                            ConsoleApp.print(base,out,"Slave port "+port);
+                        } catch (NoSuchAlgorithmException e) {
+                            e.printStackTrace();
+                        }
+                    } else{
                         try {
                             base = ConsoleApp.perform(command, base, out);
                         } catch (NoSuchAlgorithmException e) {
@@ -74,7 +72,7 @@ public class Slave extends Server {
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();
                         }
-//                    }
+                    }
 
                     out.close();
                 }

@@ -63,7 +63,6 @@ public class ConsoleApp {
                         out.println(rec);
                     }
                 } else if (operation.equals("getall")) {
-                  //  out.println(1);
                     for (DBRecord dbRecord : base.retrieveAll()) {
                         out.println(dbRecord.toString());
                     }
@@ -92,6 +91,13 @@ public class ConsoleApp {
     public static void getAll(HashBase base) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         for (DBRecord dbRecord : base.retrieveAll()) {
             System.out.println(dbRecord);
+        }
+    }
+
+    public static void print(HashBase base, PrintWriter out, String info) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        out.println(info+":");
+        for (DBRecord dbRecord : base.retrieveAll()) {
+            out.println(" "+dbRecord);
         }
     }
 

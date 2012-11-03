@@ -63,21 +63,30 @@ public class Master extends Server {
                 } else {
                     PrintWriter out = new PrintWriter(exc.getResponseBody());
                     if (command.indexOf("stopsh") == 0) {
-                        updateSlave(command,out);
+                        updateSlave(command);
                         stop();
                     } else {
+                        if(command.indexOf("getall") == 0){
+                            try {
+                                ConsoleApp.print(base,out,"Master port "+port);
+                            } catch (NoSuchAlgorithmException e) {
+                                e.printStackTrace();
+                            }
+                        }   else{
+                            try {
+                                base = ConsoleApp.perform(command, base, out);
+                            } catch (NoSuchAlgorithmException e) {
+                                e.printStackTrace();
+                            } catch (ClassNotFoundException e) {
+                                e.printStackTrace();
+                            }
 
-                        try {
-                            base = ConsoleApp.perform(command, base, out);
-                        } catch (NoSuchAlgorithmException e) {
-                            e.printStackTrace();
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
+                            if (command.indexOf("get") != 0 && command.indexOf("flush") != 0) {
+                                updateSlave(command);
+                            }
                         }
 
-                        if (command.indexOf("get(") != 0 && command.indexOf("flush") != 0) {
-                            updateSlave(command,out);
-                        }
+
                     }
                     out.close();
                 }
@@ -86,7 +95,7 @@ public class Master extends Server {
         }
 
 
-        public void updateSlave(String command, PrintWriter out) throws IOException {
+        public void updateSlave(String command) throws IOException {
             HttpClient client = new DefaultHttpClient();
             command = translateRuText(command);
 
@@ -97,12 +106,13 @@ public class Master extends Server {
             nameValuePairs.add(new BasicNameValuePair("command", command));
             post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
-            HttpResponse response = client.execute(post);
-            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-            String line;
-            while ((line = rd.readLine()) != null) {
-                out.println(line);
-            }
+            client.execute(post);
+//            HttpResponse response =  client.execute(post);
+//            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+//            String line;
+//            while ((line = rd.readLine()) != null) {
+//                out.println(line);
+//            }
         }
 
 

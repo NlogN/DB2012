@@ -106,7 +106,15 @@ public class Server {
         if (command.equals("stopsh3")) {
             return 2;
         }
-
+        if (command.equals("getall1")) {
+            return 0;
+        }
+        if (command.equals("getall2")) {
+            return 1;
+        }
+        if (command.equals("getall3")) {
+            return 2;
+        }
 
         return hash(command, 3);
     }

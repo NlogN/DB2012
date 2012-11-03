@@ -35,6 +35,7 @@ public class HashBaseTest {
             hashBase.create(DB_RECORD);
             hashBase.create(DB_RECORD1);
             ConsoleApp.getAll(hashBase);
+
     }
 
 
