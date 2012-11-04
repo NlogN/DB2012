@@ -1,7 +1,6 @@
 package ru.csc.database.server;
 
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -42,19 +41,9 @@ public class Master extends Server {
         out.println("master on port " + port + " stoped");
     }
 
+    class MyHandler extends BaseHttpHandler {
 
-    class MyHandler implements HttpHandler {
-        public void handle(HttpExchange exc) throws IOException {
-            exc.sendResponseHeaders(200, 0);
-
-            InputStreamReader isr = new InputStreamReader(exc.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String value = br.readLine();
-
-            value = replaser(value);
-            value = retranslateRuText(value);
-
-
+        protected void perform(final HttpExchange exc, final String value) throws IOException {
             int k = value.indexOf("=");
             if (k != -1) {
                 String command = value.substring(k + 1);
@@ -68,7 +57,7 @@ public class Master extends Server {
                     } else {
                         if(command.indexOf("getall") == 0){
                             try {
-                                ConsoleApp.print(base,out,"Master port "+port);
+                                ConsoleApp.print(base, out, "Master port " + port);
                             } catch (NoSuchAlgorithmException e) {
                                 e.printStackTrace();
                             }
@@ -91,7 +80,6 @@ public class Master extends Server {
                     out.close();
                 }
             }
-            exc.close();
         }
 
 
