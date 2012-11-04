@@ -40,18 +40,9 @@ public class Slave extends Server {
     }
 
 
-    class MyHandler implements HttpHandler {
-        public void handle(HttpExchange exc) throws IOException {
+    class MyHandler extends BaseHttpHandler {
 
-            exc.sendResponseHeaders(200, 0);
-
-            InputStreamReader isr = new InputStreamReader(exc.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String value = br.readLine();
-
-            value = replaser(value);
-            value = retranslateRuText(value);
-
+        protected void perform(final HttpExchange exc, final String value) throws IOException {
             int k = value.indexOf("=");
             if(k!=-1){
                 String command = value.substring(k+1);
