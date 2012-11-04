@@ -47,11 +47,11 @@ public class Master extends Server {
             int k = value.indexOf("=");
             if (k != -1) {
                 String command = value.substring(k + 1);
-                if (command.indexOf("stopm") == 0) {
+                if (command.startsWith("stopm")) {
                     stop();
                 } else {
                     PrintWriter out = new PrintWriter(exc.getResponseBody());
-                    if (command.indexOf("stopsh") == 0) {
+                    if (command.startsWith("stopsh")) {
                       //  updateSlave(command);
                         stop();
                     } else {
