@@ -47,16 +47,9 @@ public class Router extends Server {
     }
 
 
-    class MyHandler implements HttpHandler {
-        public void handle(HttpExchange exc) throws IOException {
-            exc.sendResponseHeaders(200, 0);
+    class MyHandler extends BaseHttpHandler {
 
-            InputStreamReader isr = new InputStreamReader(exc.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String value = br.readLine();
-
-            value = replaser(value);
-            value = retranslateRuText(value);
+        protected void perform(final HttpExchange exc, final String value) throws IOException {
 
             HttpPost[] posts = new HttpPost[mastersPorts.length];
             for (int i = 0; i < posts.length; i++) {
@@ -118,7 +111,6 @@ public class Router extends Server {
             }
 
             out.close();
-            exc.close();
         }
 
 
