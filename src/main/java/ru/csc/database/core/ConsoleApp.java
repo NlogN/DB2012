@@ -88,10 +88,12 @@ public class ConsoleApp {
         return base;
     }
 
-    public static void getAll(HashBase base) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    public static String getAll(HashBase base) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        StringBuilder sb = new StringBuilder();
         for (DBRecord dbRecord : base.retrieveAll()) {
-            System.out.println(dbRecord);
+            sb.append(dbRecord).append("\n");
         }
+        return sb.toString();
     }
 
     public static void print(HashBase base, PrintWriter out, String info) throws NoSuchAlgorithmException, UnsupportedEncodingException {

@@ -1,9 +1,7 @@
 package ru.csc.database.server;
 
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -25,50 +23,41 @@ import java.util.List;
 public class Master extends Server {
     private HttpServer server;
     private int port;
+    private final PrintWriter out;
 
-
-    public Master(int port) throws IOException {
+    public Master(int port, PrintWriter out) throws IOException {
         super();
+        this.out = out;
         this.port = port;
         server = HttpServer.create(new InetSocketAddress(port), 10);
         server.createContext("/", new MyHandler());
         server.start();
-        System.out.println("server on port " + port + " started");
+        out.println("master on port " + port + " started");
     }
 
 
     private void stop() {
         server.stop(0);
-        System.out.println("server on port " + port + " stoped");
+        out.println("master on port " + port + " stoped");
     }
 
+    class MyHandler extends BaseHttpHandler {
 
-    class MyHandler implements HttpHandler {
-        public void handle(HttpExchange exc) throws IOException {
-            exc.sendResponseHeaders(200, 0);
-
-            InputStreamReader isr = new InputStreamReader(exc.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String value = br.readLine();
-
-            value = replaser(value);
-            value = retranslateRuText(value);
-
-
+        protected void perform(final HttpExchange exc, final String value) throws IOException {
             int k = value.indexOf("=");
             if (k != -1) {
                 String command = value.substring(k + 1);
-                if (command.indexOf("stopm") == 0) {
+                if (command.startsWith("stopm")) {
                     stop();
                 } else {
                     PrintWriter out = new PrintWriter(exc.getResponseBody());
-                    if (command.indexOf("stopsh") == 0) {
+                    if (command.startsWith("stopsh")) {
                       //  updateSlave(command);
                         stop();
                     } else {
                         if(command.indexOf("getall") == 0){
                             try {
-                                ConsoleApp.print(base,out,"Master port "+port);
+                                ConsoleApp.print(base, out, "Master port " + port);
                             } catch (NoSuchAlgorithmException e) {
                                 e.printStackTrace();
                             }
@@ -91,7 +80,6 @@ public class Master extends Server {
                     out.close();
                 }
             }
-            exc.close();
         }
 
 

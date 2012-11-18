@@ -1,6 +1,5 @@
 package ru.csc.database.server;
 
-import ru.csc.database.core.HashBase;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -11,7 +10,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.*;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -27,6 +25,7 @@ import java.util.regex.Pattern;
 public class Client {
     private static HttpClient client = new DefaultHttpClient();
     static int routerPort = 8010;
+    private static final PrintWriter out = new PrintWriter(System.out);
 
 
     public static void main(String[] args) throws IOException {
@@ -49,12 +48,15 @@ public class Client {
                         BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
                         String line;
                         while ((line = rd.readLine()) != null) {
-                            System.out.println(line);
+                            out.println(line);
                         }
                     } catch (HttpHostConnectException e1) {
-                        System.out.println("Required server is unavailable.");
+                        out.println("Router is unavailable.");
                     }
-
+                    if (command.equals("exit")) {
+                        out.println("client is stopped.");
+                        System.exit(0);
+                    }
 
                 } else{
                     System.out.println("incorrect command.");
@@ -62,21 +64,16 @@ public class Client {
             }
     }
 
+    final static Pattern p1 = Pattern.compile("^((get)|(delete)|(add))[(][A-Za-zА-Яа-я]+[)]$");
+    final static Pattern p2 = Pattern.compile("^((add)|(update))[(][A-Za-zА-Яа-я]+,[+]{0,1}[0-9]+[)]$");
+    final static Pattern p3 = Pattern.compile("^((flush)|(load)|)[0-9]{0,1}$");
+    final static Pattern p4 = Pattern.compile("^((getall)|(stopR)|(exit))$");
+    final static Pattern p5 = Pattern.compile("^(stopm)[1-3]{0,1}$");
+    final static Pattern p6 = Pattern.compile("^(stopsh)[1-3]{1}$");
 
-    public static boolean isCorrect(String command) {
-        Pattern p1 = Pattern.compile("^((get)|(delete)|(add))[(][A-Za-zА-Яа-я]+[)]$");
-        Pattern p2 = Pattern.compile("^((add)|(update))[(][A-Za-zА-Яа-я]+,[+]{0,1}[0-9]+[)]$");
-        Pattern p3 = Pattern.compile("^((flush)|(load)|)[0-9]{0,1}$");
-        Pattern p4 = Pattern.compile("^((getall)|(stopR)|(exit))$");
-        Pattern p5 = Pattern.compile("^(stopm)[1-3]{0,1}$");
-        Pattern p6 = Pattern.compile("^(stopsh)[1-3]{1}$");
-        Matcher m1 = p1.matcher(command);
-        Matcher m2 = p2.matcher(command);
-        Matcher m3 = p3.matcher(command);
-        Matcher m4 = p4.matcher(command);
-        Matcher m5 = p5.matcher(command);
-        Matcher m6 = p6.matcher(command);
-        return m1.matches()||m2.matches()||m3.matches()||m4.matches()||m5.matches()||m6.matches();
+    public static boolean isCorrect(final String command) {
+        return p1.matcher(command).matches() || p2.matcher(command).matches() || p3.matcher(command).matches() || 
+                p4.matcher(command).matches() || p5.matcher(command).matches() || p6.matcher(command).matches();
     }
 
     private static String translateRuText(String s) {

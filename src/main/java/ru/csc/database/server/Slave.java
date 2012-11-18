@@ -4,7 +4,6 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import ru.csc.database.core.ConsoleApp;
-import ru.csc.database.core.DBRecord;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,36 +19,30 @@ import java.security.NoSuchAlgorithmException;
 public class Slave extends Server {
     private HttpServer server;
     private int port;
+    private final PrintWriter out;
 
-
-    public Slave(int port) throws IOException {
+    public Slave(int port, PrintWriter out) throws IOException {
         super();
+        this.out = out;
         this.port = port;
         server = HttpServer.create(new InetSocketAddress(port), 10);
         server.createContext("/", new MyHandler());
         server.start();
-        System.out.println("server on port " + port + " started");
+        out.println("slave on port " + port + " started");
+        out.flush();
     }
 
 
     private void stop() {
-        System.out.println("server on port " + port + " stoped");
         server.stop(0);
+        out.println("slave on port " + port + " stoped");
+        out.flush();
     }
 
 
-    class MyHandler implements HttpHandler {
-        public void handle(HttpExchange exc) throws IOException {
+    class MyHandler extends BaseHttpHandler {
 
-            exc.sendResponseHeaders(200, 0);
-
-            InputStreamReader isr = new InputStreamReader(exc.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String value = br.readLine();
-
-            value = replaser(value);
-            value = retranslateRuText(value);
-
+        protected void perform(final HttpExchange exc, final String value) throws IOException {
             int k = value.indexOf("=");
             if(k!=-1){
                 String command = value.substring(k+1);

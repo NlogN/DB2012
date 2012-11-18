@@ -1,5 +1,6 @@
 package ru.csc.database.webinterface.servlet;
 
+import ru.csc.database.core.ConsoleApp;
 import ru.csc.database.core.DBRecord;
 import ru.csc.database.core.HashBase;
 
@@ -9,6 +10,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 /**
@@ -20,7 +23,7 @@ public class InterfaceServlet {
 
     @GET
     @Produces(MediaType.TEXT_HTML)
-    public String getMainPage() {
+    public String getMainPage() throws NoSuchAlgorithmException, UnsupportedEncodingException {
         final HashBase base;
         try {
             FileInputStream fileInputStream = new FileInputStream("my_base1");
@@ -31,13 +34,8 @@ public class InterfaceServlet {
         } catch (Exception e) {
             return "sorry, we have some problems \n" + e.getMessage();
         }
-        return "";
-//        final List<DBRecord> result = base.subList(0, 1);
-//        StringBuilder sb = new StringBuilder();
-//        for(DBRecord record : result){
-//            sb.append(record.toString()).append("\n");
-//        }
-//        return sb.toString();
+        return ConsoleApp.getAll(base);
+
     }
 
 }

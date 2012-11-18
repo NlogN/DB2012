@@ -4,6 +4,6 @@ update(sidorov,+7921329439)
 delete(sidorov)
 add(Иван, 12312)
 get(Иван)
-add(Вася, 423432)
+add(Василий, 423432)
 flush
 exit
