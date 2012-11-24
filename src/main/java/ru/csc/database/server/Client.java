@@ -25,7 +25,6 @@ import java.util.regex.Pattern;
 public class Client {
     private static HttpClient client = new DefaultHttpClient();
     static int routerPort = 8010;
-    private static final PrintWriter out = new PrintWriter(System.out);
 
 
     public static void main(String[] args) throws IOException {
@@ -48,13 +47,13 @@ public class Client {
                         BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
                         String line;
                         while ((line = rd.readLine()) != null) {
-                            out.println(line);
+                            System.out.println(line);
                         }
                     } catch (HttpHostConnectException e1) {
-                        out.println("Router is unavailable.");
+                        System.out.println("Router is unavailable.");
                     }
                     if (command.equals("exit")) {
-                        out.println("client is stopped.");
+                        System.out.println("client is stopped.");
                         System.exit(0);
                     }
 

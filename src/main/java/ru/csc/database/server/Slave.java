@@ -19,30 +19,30 @@ import java.security.NoSuchAlgorithmException;
 public class Slave extends Server {
     private HttpServer server;
     private int port;
-    private final PrintWriter out;
+   // private final PrintWriter out;
 
-    public Slave(int port, PrintWriter out) throws IOException {
+    public Slave(int port) throws IOException {
         super();
-        this.out = out;
+    //    this.out = out;
         this.port = port;
         server = HttpServer.create(new InetSocketAddress(port), 10);
         server.createContext("/", new MyHandler());
         server.start();
-        out.println("slave on port " + port + " started");
-        out.flush();
+        System.out.println("slave on port " + port + " started");
+     //   out.flush();
     }
 
 
     private void stop() {
         server.stop(0);
-        out.println("slave on port " + port + " stoped");
-        out.flush();
+        System.out.println("slave on port " + port + " stoped");
+        //out.flush();
     }
 
 
     class MyHandler extends BaseHttpHandler {
 
-        protected void perform(final HttpExchange exc, final String value) throws IOException {
+        protected void perform(final String value, PrintWriter out) throws IOException {
             int k = value.indexOf("=");
             if(k!=-1){
                 String command = value.substring(k+1);
@@ -50,7 +50,7 @@ public class Slave extends Server {
                 if (command.indexOf("stopsh") == 0) {
                     stop();
                 } else {
-                    PrintWriter out = new PrintWriter(exc.getResponseBody());
+                 //   out = new PrintWriter(exc.getResponseBody());
                     if(command.indexOf("getall") == 0){
                         try {
                             ConsoleApp.print(base,out,"Slave port "+port);

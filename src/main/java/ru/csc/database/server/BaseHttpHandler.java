@@ -6,6 +6,7 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 
 /**
 * Created by: pulser at 04.11.12 19:17
@@ -21,12 +22,12 @@ abstract class BaseHttpHandler implements HttpHandler {
 
         value = Server.replaser(value);
         value = Server.retranslateRuText(value);
-
-
-        perform(exc, value);
+      //  System.out.println(value);
+        PrintWriter out =  new PrintWriter(exc.getResponseBody());
+        perform(value, out);
         exc.close();
     }
 
-    abstract protected void perform(final HttpExchange exc, final String value) throws IOException;
+    abstract protected void perform(final String value, PrintWriter out) throws IOException;
 
 }

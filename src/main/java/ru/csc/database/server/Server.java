@@ -24,20 +24,17 @@ public class Server {
 
 
     public static void main(String[] args) throws IOException {
-        if(args.length==2){
-            if(args[0].equals("master")){
-                Master master = new Master(Integer.parseInt(args[1]),
-                        new PrintWriter(System.out));
+        if (args.length == 2) {
+            if (args[0].equals("master")) {
+                Master master = new Master(Integer.parseInt(args[1]));
             }
-            if(args[0].equals("slave")){
-                Slave slave = new Slave(Integer.parseInt(args[1]),
-                        new PrintWriter(System.out));
+            if (args[0].equals("slave")) {
+                Slave slave = new Slave(Integer.parseInt(args[1]));
             }
-            if(args[0].equals("router")){
-                Router router = new Router(Integer.parseInt(args[1]),
-                        new PrintWriter(System.out));
+            if (args[0].equals("router")) {
+                Router router = new Router(Integer.parseInt(args[1]));
             }
-        }else{
+        } else {
             System.out.println("incorrect parameter");
         }
 
