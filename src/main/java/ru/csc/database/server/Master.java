@@ -23,11 +23,10 @@ import java.util.List;
 public class Master extends Server {
     private HttpServer server;
     private int port;
-   // private final PrintWriter out;
+
 
     public Master(int port) throws IOException {
         super();
-        //this.out = out;
         this.port = port;
         server = HttpServer.create(new InetSocketAddress(port), 10);
         server.createContext("/", new MyHandler());
@@ -50,11 +49,11 @@ public class Master extends Server {
                 if (command.startsWith("stopm")) {
                     stop();
                 } else {
-                 //   out = new PrintWriter(exc.getResponseBody());
+
                     if (command.startsWith("stopsh")) {
                         stop();
                     } else {
-                        if(command.indexOf("getall") == 0){
+                        if(command.startsWith("getall")){
                             try {
                                 ConsoleApp.print(base, out, "Master port " + port);
                             } catch (NoSuchAlgorithmException e) {
@@ -94,19 +93,11 @@ public class Master extends Server {
             post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
             client.execute(post);
-//            HttpResponse response =  client.execute(post);
-//            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-//            String line;
-//            while ((line = rd.readLine()) != null) {
-//                out.println(line);
-//            }
+
         }
 
 
     }
 
-//    public static void main(String[] args) throws IOException {
-//      Master master = new Master(Integer.parseInt("8006"));
-//
-//    }
+
 }

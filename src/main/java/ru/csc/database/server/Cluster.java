@@ -2,7 +2,7 @@ package ru.csc.database.server;
 
 
 import java.io.IOException;
-import java.io.PrintWriter;
+
 
 /**
  * User: ilya
@@ -12,7 +12,6 @@ public class Cluster {
 
 
     public static void main(String[] args) throws IOException {
-     //   PrintWriter out = new PrintWriter(System.out);
         Router router = new Router(Client.routerPort);
         Master master1 = new Master(Server.mastersPorts[0]);
         Master master2 = new Master(Server.mastersPorts[1]);
@@ -20,7 +19,6 @@ public class Cluster {
         Slave slave1 = new Slave(Integer.parseInt("8001"));
         Slave slave2 = new Slave(Integer.parseInt("8004"));
         Slave slave3 = new Slave(Integer.parseInt("8007"));
-
     }
 
 

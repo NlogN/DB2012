@@ -22,7 +22,7 @@ abstract class BaseHttpHandler implements HttpHandler {
 
         value = Server.replaser(value);
         value = Server.retranslateRuText(value);
-      //  System.out.println(value);
+
         PrintWriter out =  new PrintWriter(exc.getResponseBody());
         perform(value, out);
         exc.close();
