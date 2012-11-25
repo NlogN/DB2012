@@ -104,11 +104,9 @@ public class Router extends Server {
             HttpClient client = new DefaultHttpClient();
 
             int masterPort = getMasterPort(command);
-
             int slavePort = getSlavePort(command);
 
             if (command.startsWith("getall") || command.startsWith("stopsh")) {
-
                 try {
                     toMaster(masterPort, out, client, nameValuePairs);
                 } catch (HttpHostConnectException e) {

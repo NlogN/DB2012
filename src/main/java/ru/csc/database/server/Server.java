@@ -4,8 +4,6 @@ package ru.csc.database.server;
 import ru.csc.database.core.HashBase;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-
 
 /**
  * User: ilya
@@ -46,12 +44,11 @@ public class Server {
     }
 
     public static int getMasterPort(String command) {
-        int num = getMasterPortInd(command);
-        int res = mastersPorts[num];
-        return res;
+        int num = getMasterPortId(command);
+        return mastersPorts[num];
     }
 
-    public static int getMasterPortInd(String command) {
+    public static int getMasterPortId(String command) {
         if (command.equals("flush1")) {
             return 0;
         } else if (command.equals("flush2")) {
@@ -93,10 +90,10 @@ public class Server {
             return 2;
         }
 
-        return hash(command, 3);
+        return getIndex(command, mastersPorts.length);
     }
 
-    public static int hash(String command, int maxHashValue) {
+    public static int getIndex(String command, int maxHashValue) {
         int ind1 = command.indexOf("(");
         int ind2 = command.indexOf(",");
         if (ind2 == -1) {
@@ -104,11 +101,21 @@ public class Server {
         }
         if (ind1 < ind2) {
             String key = command.substring(ind1 + 1, ind2);
-            int hashCode = key.hashCode();
-            if(hashCode > 0){
-                return  hashCode % maxHashValue;
-            }
+            return hash(key, maxHashValue);
         }
         return 0;
     }
+
+    public static int hash(String s, int maxHashValue) {
+        int h = 19;
+        for (int i = 0; i < s.length(); i++) {
+            h = 31 * h + s.charAt(i);
+        }
+        int res = h % maxHashValue;
+        if (res > 0) {
+            return res;
+        }
+        return 0;
+    }
+
 }
