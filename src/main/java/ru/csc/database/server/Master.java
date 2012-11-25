@@ -1,6 +1,6 @@
 package ru.csc.database.server;
 
-import com.sun.net.httpserver.HttpExchange;
+
 import com.sun.net.httpserver.HttpServer;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -83,14 +83,13 @@ public class Master extends Server {
 
         public void updateSlave(String command) throws IOException {
             HttpClient client = new DefaultHttpClient();
-            command = translateRuText(command);
 
             int slavePort = getSlavePort(command);
 
             HttpPost post = new HttpPost(defaultHttp + slavePort + "/");
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
             nameValuePairs.add(new BasicNameValuePair("command", command));
-            post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            post.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
 
             client.execute(post);
 

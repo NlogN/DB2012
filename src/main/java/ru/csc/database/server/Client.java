@@ -33,13 +33,12 @@ public class Client {
                 String command = in.nextLine();
                 command = command.replaceAll(" ", "");
                 if (isCorrect(command)) {
-                    command = translateRuText(command);
 
                     List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
                     nameValuePairs.add(new BasicNameValuePair("command", command));
 
                     HttpPost post1 = new HttpPost(Server.defaultHttp + routerPort  + "/");
-                    post1.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                    post1.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
 
                     try {
                         HttpResponse response = client.execute(post1);
@@ -73,13 +72,4 @@ public class Client {
         return p1.matcher(command).matches() || p2.matcher(command).matches() || p3.matcher(command).matches() || 
                 p4.matcher(command).matches() || p5.matcher(command).matches() || p6.matcher(command).matches();
     }
-
-    private static String translateRuText(String s) {
-        for (int i = 1040; i <= 1103; i++) {
-            s = s.replaceAll(Character.toString((char) i), "\\$" + i + "\\$");
-        }
-        return s;
-    }
-
-
 }

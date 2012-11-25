@@ -41,36 +41,14 @@ public class Server {
     }
 
 
-    public static String replaser(String s){
-        s = s.replaceAll("%3D","=");
-        s = s.replaceAll("%2C",",");
-        s = s.replaceAll("%2B","+");
-        s = s.replaceAll("%28","(");
-        s = s.replaceAll("%29",")");
-        s = s.replaceAll("%24","\\$");
-        return s;
-    }
-
-    protected static String retranslateRuText(String s) {
-        for (int i = 1040; i <= 1103; i++) {
-            s = s.replaceAll("\\$" + i + "\\$", Character.toString((char) i));
-        }
-        return s;
-    }
-
-    protected static String translateRuText(String s) {
-        for (int i = 1040; i <= 1103; i++) {
-            s = s.replaceAll(Character.toString((char) i), "\\$" + i + "\\$");
-        }
-        return s;
-    }
-
     public static int getSlavePort(String command) {
         return getMasterPort(command) + 1;
     }
 
     public static int getMasterPort(String command) {
-        return mastersPorts[getMasterPortInd(command)];
+        int num = getMasterPortInd(command);
+        int res = mastersPorts[num];
+        return res;
     }
 
     public static int getMasterPortInd(String command) {
@@ -126,7 +104,10 @@ public class Server {
         }
         if (ind1 < ind2) {
             String key = command.substring(ind1 + 1, ind2);
-            return key.hashCode() % maxHashValue;
+            int hashCode = key.hashCode();
+            if(hashCode > 0){
+                return  hashCode % maxHashValue;
+            }
         }
         return 0;
     }

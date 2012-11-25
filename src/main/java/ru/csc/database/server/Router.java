@@ -98,16 +98,17 @@ public class Router extends Server {
 
 
         void performCommand(String command, PrintWriter out) throws IOException {
-            command = translateRuText(command);
 
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
             nameValuePairs.add(new BasicNameValuePair("command", command));
             HttpClient client = new DefaultHttpClient();
 
             int masterPort = getMasterPort(command);
+
             int slavePort = getSlavePort(command);
 
             if (command.startsWith("getall") || command.startsWith("stopsh")) {
+
                 try {
                     toMaster(masterPort, out, client, nameValuePairs);
                 } catch (HttpHostConnectException e) {
@@ -139,8 +140,9 @@ public class Router extends Server {
         }
 
         void toMaster(int masterPort, PrintWriter out, HttpClient client, List<NameValuePair> nameValuePairs) throws IOException {
+
             HttpPost post = new HttpPost(defaultHttp + masterPort + "/");
-            post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            post.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
             HttpResponse response = client.execute(post);
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
             String line;
@@ -153,7 +155,7 @@ public class Router extends Server {
         void toSlave(int slavePort, String command, PrintWriter out, HttpClient client, List<NameValuePair> nameValuePairs) throws IOException {
             if (command.startsWith("get") || command.startsWith("flush") || command.startsWith("load") || command.startsWith("getall") || command.startsWith("stopsh")) {
                 HttpPost post1 = new HttpPost(defaultHttp + slavePort + "/");
-                post1.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                post1.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
                 HttpResponse response = client.execute(post1);
                 BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
                 String line;
