@@ -21,13 +21,15 @@ import java.util.List;
  */
 public class Router extends Server {
     private HttpServer server;
+    private HttpClient client;
     private int port;
 
 
     public Router(int port) throws IOException {
         super();
         this.port = port;
-        server = HttpServer.create(new InetSocketAddress(port), 10);
+        this.server = HttpServer.create(new InetSocketAddress(port), 10);
+        this.client = new DefaultHttpClient();
         server.createContext("/", new MyHandler());
         server.start();
         System.out.println("router on port " + port + " started");
@@ -98,24 +100,22 @@ public class Router extends Server {
 
 
         void performCommand(String command, PrintWriter out) throws IOException {
-
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
             nameValuePairs.add(new BasicNameValuePair("command", command));
-            HttpClient client = new DefaultHttpClient();
 
             int masterPort = getMasterPort(command);
             int slavePort = getSlavePort(command);
 
             if (command.startsWith("getall") || command.startsWith("stopsh")) {
                 try {
-                    toMaster(masterPort, out, client, nameValuePairs);
+                    toMaster(masterPort, out, nameValuePairs);
                 } catch (HttpHostConnectException e) {
                     if (!command.startsWith("stopsh")) {
                         out.println("Required master(port:" + masterPort + ") is unavailable.");
                     }
                 }
                 try {
-                    toSlave(slavePort, command, out, client, nameValuePairs);
+                    toSlave(slavePort, command, out, nameValuePairs);
                 } catch (HttpHostConnectException e) {
                     if (!command.startsWith("stopsh")) {
                         out.println("Required slave(port:" + slavePort + ") is unavailable.");
@@ -124,11 +124,11 @@ public class Router extends Server {
 
             } else {
                 try {
-                    toMaster(masterPort, out, client, nameValuePairs);
+                    toMaster(masterPort, out, nameValuePairs);
                 } catch (HttpHostConnectException e) { // если мастер упал
                     out.println("Required master(port:" + masterPort + ") is unavailable.");
                     try {
-                        toSlave(slavePort, command, out, client, nameValuePairs);
+                        toSlave(slavePort, command, out, nameValuePairs);
                     } catch (HttpHostConnectException e1) {
                         out.println("Required slave(port:" + slavePort + ") is unavailable.");
                     }
@@ -137,8 +137,7 @@ public class Router extends Server {
             out.flush();
         }
 
-        void toMaster(int masterPort, PrintWriter out, HttpClient client, List<NameValuePair> nameValuePairs) throws IOException {
-
+        void toMaster(int masterPort, PrintWriter out, List<NameValuePair> nameValuePairs) throws IOException {
             HttpPost post = new HttpPost(defaultHttp + masterPort + "/");
             post.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
             HttpResponse response = client.execute(post);
@@ -150,7 +149,7 @@ public class Router extends Server {
             out.flush();
         }
 
-        void toSlave(int slavePort, String command, PrintWriter out, HttpClient client, List<NameValuePair> nameValuePairs) throws IOException {
+        void toSlave(int slavePort, String command, PrintWriter out, List<NameValuePair> nameValuePairs) throws IOException {
             if (command.startsWith("get") || command.startsWith("flush") || command.startsWith("load") || command.startsWith("getall") || command.startsWith("stopsh")) {
                 HttpPost post1 = new HttpPost(defaultHttp + slavePort + "/");
                 post1.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));

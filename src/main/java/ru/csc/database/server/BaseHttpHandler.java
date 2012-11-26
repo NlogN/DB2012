@@ -18,7 +18,6 @@ abstract class BaseHttpHandler implements HttpHandler {
         final BufferedReader br = new BufferedReader(isr);
 
         String value = br.readLine();
-
         value = URLDecoder.decode(value, "UTF-8");
 
         PrintWriter out =  new PrintWriter(exc.getResponseBody());

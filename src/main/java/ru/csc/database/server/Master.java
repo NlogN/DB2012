@@ -22,13 +22,15 @@ import java.util.List;
  */
 public class Master extends Server {
     private HttpServer server;
+  //  private HttpClient client;
     private int port;
 
 
     public Master(int port) throws IOException {
         super();
         this.port = port;
-        server = HttpServer.create(new InetSocketAddress(port), 10);
+        this.server = HttpServer.create(new InetSocketAddress(port), 10);
+    //    this.client = new DefaultHttpClient();
         server.createContext("/", new MyHandler());
         server.start();
         System.out.println("master on port " + port + " started");
@@ -43,6 +45,7 @@ public class Master extends Server {
     class MyHandler extends BaseHttpHandler {
 
         protected void perform(final String value, PrintWriter out) throws IOException {
+            //System.out.println("mcom " + value);
             int k = value.indexOf("=");
             if (k != -1) {
                 String command = value.substring(k + 1);
@@ -53,13 +56,13 @@ public class Master extends Server {
                     if (command.startsWith("stopsh")) {
                         stop();
                     } else {
-                        if(command.startsWith("getall")){
+                        if (command.startsWith("getall")) {
                             try {
                                 ConsoleApp.print(base, out, "Master port " + port);
                             } catch (NoSuchAlgorithmException e) {
                                 e.printStackTrace();
                             }
-                        }   else{
+                        } else {
                             try {
                                 base = ConsoleApp.perform(command, base, out);
                             } catch (NoSuchAlgorithmException e) {
@@ -68,7 +71,7 @@ public class Master extends Server {
                                 e.printStackTrace();
                             }
 
-                            if (command.indexOf("get") != 0 && command.indexOf("flush") != 0) {
+                            if (!command.startsWith("get") && !command.startsWith("flush")) {
                                 updateSlave(command);
                             }
                         }
@@ -82,17 +85,14 @@ public class Master extends Server {
 
 
         public void updateSlave(String command) throws IOException {
-            HttpClient client = new DefaultHttpClient();
-
             int slavePort = getSlavePort(command);
-
+            HttpClient client = new DefaultHttpClient();
             HttpPost post = new HttpPost(defaultHttp + slavePort + "/");
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
             nameValuePairs.add(new BasicNameValuePair("command", command));
-            post.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
+            post.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
 
             client.execute(post);
-
         }
 
 

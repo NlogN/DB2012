@@ -107,12 +107,12 @@ public class Server {
     }
 
     public static int hash(String s, int maxHashValue) {
-        int h = 19;
+        int h = 0;
         for (int i = 0; i < s.length(); i++) {
             h = 31 * h + s.charAt(i);
         }
         int res = h % maxHashValue;
-        if (res > 0) {
+        if (res >= 0) {
             return res;
         }
         return 0;
