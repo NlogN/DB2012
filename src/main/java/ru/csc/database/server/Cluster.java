@@ -3,6 +3,7 @@ package ru.csc.database.server;
 
 import java.io.IOException;
 
+
 /**
  * User: ilya
  * Date: 25.10.12
@@ -18,7 +19,6 @@ public class Cluster {
         Slave slave1 = new Slave(Integer.parseInt("8001"));
         Slave slave2 = new Slave(Integer.parseInt("8004"));
         Slave slave3 = new Slave(Integer.parseInt("8007"));
-
     }
 
 

@@ -1,9 +1,7 @@
 package ru.csc.database.server;
 
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
+
 import com.sun.net.httpserver.HttpServer;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -24,55 +22,47 @@ import java.util.List;
  */
 public class Master extends Server {
     private HttpServer server;
+  //  private HttpClient client;
     private int port;
 
 
     public Master(int port) throws IOException {
         super();
         this.port = port;
-        server = HttpServer.create(new InetSocketAddress(port), 10);
+        this.server = HttpServer.create(new InetSocketAddress(port), 10);
+    //    this.client = new DefaultHttpClient();
         server.createContext("/", new MyHandler());
         server.start();
-        System.out.println("server on port " + port + " started");
+        System.out.println("master on port " + port + " started");
     }
 
 
     private void stop() {
         server.stop(0);
-        System.out.println("server on port " + port + " stoped");
+        System.out.println("master on port " + port + " stoped");
     }
 
+    class MyHandler extends BaseHttpHandler {
 
-    class MyHandler implements HttpHandler {
-        public void handle(HttpExchange exc) throws IOException {
-            exc.sendResponseHeaders(200, 0);
-
-            InputStreamReader isr = new InputStreamReader(exc.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String value = br.readLine();
-
-            value = replaser(value);
-            value = retranslateRuText(value);
-
-
+        protected void perform(final String value, PrintWriter out) throws IOException {
+            //System.out.println("mcom " + value);
             int k = value.indexOf("=");
             if (k != -1) {
                 String command = value.substring(k + 1);
-                if (command.indexOf("stopm") == 0) {
+                if (command.startsWith("stopm")) {
                     stop();
                 } else {
-                    PrintWriter out = new PrintWriter(exc.getResponseBody());
-                    if (command.indexOf("stopsh") == 0) {
-                      //  updateSlave(command);
+
+                    if (command.startsWith("stopsh")) {
                         stop();
                     } else {
-                        if(command.indexOf("getall") == 0){
+                        if (command.startsWith("getall")) {
                             try {
-                                ConsoleApp.print(base,out,"Master port "+port);
+                                ConsoleApp.print(base, out, "Master port " + port);
                             } catch (NoSuchAlgorithmException e) {
                                 e.printStackTrace();
                             }
-                        }   else{
+                        } else {
                             try {
                                 base = ConsoleApp.perform(command, base, out);
                             } catch (NoSuchAlgorithmException e) {
@@ -81,7 +71,7 @@ public class Master extends Server {
                                 e.printStackTrace();
                             }
 
-                            if (command.indexOf("get") != 0 && command.indexOf("flush") != 0) {
+                            if (!command.startsWith("get") && !command.startsWith("flush")) {
                                 updateSlave(command);
                             }
                         }
@@ -91,35 +81,22 @@ public class Master extends Server {
                     out.close();
                 }
             }
-            exc.close();
         }
 
 
         public void updateSlave(String command) throws IOException {
-            HttpClient client = new DefaultHttpClient();
-            command = translateRuText(command);
-
             int slavePort = getSlavePort(command);
-
+            HttpClient client = new DefaultHttpClient();
             HttpPost post = new HttpPost(defaultHttp + slavePort + "/");
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
             nameValuePairs.add(new BasicNameValuePair("command", command));
-            post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            post.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
 
             client.execute(post);
-//            HttpResponse response =  client.execute(post);
-//            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-//            String line;
-//            while ((line = rd.readLine()) != null) {
-//                out.println(line);
-//            }
         }
 
 
     }
 
-//    public static void main(String[] args) throws IOException {
-//      Master master = new Master(Integer.parseInt("8006"));
-//
-//    }
+
 }

@@ -1,14 +1,10 @@
 package ru.csc.database.server;
 
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
+
 import com.sun.net.httpserver.HttpServer;
 import ru.csc.database.core.ConsoleApp;
-import ru.csc.database.core.DBRecord;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.security.NoSuchAlgorithmException;
@@ -21,50 +17,40 @@ public class Slave extends Server {
     private HttpServer server;
     private int port;
 
-
     public Slave(int port) throws IOException {
         super();
         this.port = port;
         server = HttpServer.create(new InetSocketAddress(port), 10);
         server.createContext("/", new MyHandler());
         server.start();
-        System.out.println("server on port " + port + " started");
+        System.out.println("slave on port " + port + " started");
     }
 
 
     private void stop() {
-        System.out.println("server on port " + port + " stoped");
         server.stop(0);
+        System.out.println("slave on port " + port + " stoped");
     }
 
 
-    class MyHandler implements HttpHandler {
-        public void handle(HttpExchange exc) throws IOException {
+    class MyHandler extends BaseHttpHandler {
 
-            exc.sendResponseHeaders(200, 0);
-
-            InputStreamReader isr = new InputStreamReader(exc.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String value = br.readLine();
-
-            value = replaser(value);
-            value = retranslateRuText(value);
-
+        protected void perform(final String value, PrintWriter out) throws IOException {
+            //System.out.println("scom = " + value);
             int k = value.indexOf("=");
-            if(k!=-1){
-                String command = value.substring(k+1);
+            if (k != -1) {
+                String command = value.substring(k + 1);
 
-                if (command.indexOf("stopsh") == 0) {
+                if (command.startsWith("stopsh")) {
                     stop();
                 } else {
-                    PrintWriter out = new PrintWriter(exc.getResponseBody());
-                    if(command.indexOf("getall") == 0){
+                    if (command.startsWith("getall")) {
                         try {
-                            ConsoleApp.print(base,out,"Slave port "+port);
+                            ConsoleApp.print(base, out, "Slave port " + port);
                         } catch (NoSuchAlgorithmException e) {
                             e.printStackTrace();
                         }
-                    } else{
+                    } else {
                         try {
                             base = ConsoleApp.perform(command, base, out);
                         } catch (NoSuchAlgorithmException e) {

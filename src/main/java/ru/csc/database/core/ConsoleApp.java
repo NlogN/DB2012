@@ -10,8 +10,7 @@ import java.util.StringTokenizer;
 public class ConsoleApp {
 
     final private static String [] permittedOperations =
-            {"add", "update", "delete", "get", "getall", "flush", "load",
-                    "exit"};
+            {"add", "update", "delete", "get", "getall", "flush", "load", "exit"};
 
     public static HashBase perform(String input, HashBase base,
                             PrintWriter out) throws NoSuchAlgorithmException, IOException, ClassNotFoundException {
