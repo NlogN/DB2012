@@ -27,39 +27,45 @@ public class Client {
 
 
     public static void main(String[] args) throws IOException {
-
-            Scanner in = new Scanner(System.in);
-            while (in.hasNext()) {
-                String command = in.nextLine();
-                command = command.replaceAll(" ", "");
-                if (isCorrect(command)) {
-
-                    List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-                    nameValuePairs.add(new BasicNameValuePair("command", command));
-
-                    HttpPost post1 = new HttpPost(Server.defaultHttp + routerPort  + "/");
-                    post1.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
-
-                    try {
-                        HttpResponse response = client.execute(post1);
-                        BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-                        String line;
-                        while ((line = rd.readLine()) != null) {
-                            System.out.println(line);
-                        }
-                    } catch (HttpHostConnectException e1) {
-                        System.out.println("Router is unavailable.");
-                    }
-                    if (command.equals("exit")) {
-                        System.out.println("client is stopped.");
-                        System.exit(0);
-                    }
-
-                } else{
-                    System.out.println("incorrect command.");
-                }
-            }
+        PrintWriter pw = new PrintWriter(System.out, true);
+        Scanner in = new Scanner(System.in);
+        while (in.hasNext()) {
+            String command = in.nextLine();
+            perform(command, pw);
+        }
     }
+
+    public static void perform(String command, PrintWriter out) throws IOException {
+        command = command.replaceAll(" ", "");
+        if (isCorrect(command)) {
+
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+            nameValuePairs.add(new BasicNameValuePair("command", command));
+
+            HttpPost post1 = new HttpPost(Server.defaultHttp + routerPort + "/");
+            post1.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
+
+            try {
+                HttpResponse response = client.execute(post1);
+                BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                String line;
+                while ((line = rd.readLine()) != null) {
+                    out.println(line);
+                }
+            } catch (HttpHostConnectException e1) {
+                out.println("Router is unavailable.");
+            }
+            if (command.equals("exit")) {
+                out.println("client is stopped.");
+                System.exit(0);
+            }
+
+        } else {
+            out.println("incorrect command.");
+        }
+    }
+
+
 
     final static Pattern p1 = Pattern.compile("^((get)|(delete)|(add))[(][A-Za-zА-Яа-я]+[)]$");
     final static Pattern p2 = Pattern.compile("^((add)|(update))[(][A-Za-zА-Яа-я]+,[+]{0,1}[0-9]+[)]$");
