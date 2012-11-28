@@ -2,6 +2,8 @@ package ru.csc.database.core;
 
 import java.io.*;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 
@@ -88,12 +90,12 @@ public class ConsoleApp {
         return base;
     }
 
-    public static String getAll(HashBase base) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        StringBuilder sb = new StringBuilder();
+    public static List<DBRecord> getAll(HashBase base) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        List<DBRecord> allRecords = new ArrayList<DBRecord>();
         for (DBRecord dbRecord : base.retrieveAll()) {
-            sb.append(dbRecord).append("\n");
+            allRecords.add(dbRecord);
         }
-        return sb.toString();
+        return allRecords;
     }
 
     public static void print(HashBase base, PrintWriter out, String info) throws NoSuchAlgorithmException, UnsupportedEncodingException {
