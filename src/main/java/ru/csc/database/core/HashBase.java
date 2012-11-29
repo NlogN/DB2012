@@ -75,14 +75,6 @@ public class HashBase implements Serializable {
         return result;
     }
 
-//    public List<DBRecord> retrieveAll() throws NoSuchAlgorithmException, UnsupportedEncodingException {
-//        List<DBRecord> result = new ArrayList<DBRecord>();
-//        for (DBRecord rec : store) {
-//                result.add(rec);
-//        }
-//        return result;
-//    }
-
 
     void update(DBRecord record) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         DBRecord fatherRecord = find(record.id);

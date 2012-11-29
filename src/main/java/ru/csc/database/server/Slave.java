@@ -36,7 +36,6 @@ public class Slave extends Server {
     class MyHandler extends BaseHttpHandler {
 
         protected void perform(final String value, PrintWriter out) throws IOException {
-            //System.out.println("scom = " + value);
             int k = value.indexOf("=");
             if (k != -1) {
                 String command = value.substring(k + 1);

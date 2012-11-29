@@ -5,6 +5,6 @@ html
     body
         form(action="/search", method="GET", enctype="application/x-www-form-urlencoded", accept-charset="UTF-8")
             input(type="text", name="query", id="query", value="")
-            input(type="button", name="search", value="search", onclick="$.get('/search?query='+$('#query').val(), function (data) {$('#result').val(''); $('#result').html(data);});")
+            input(type="button", name="search", value="perform", onclick="$.get('/search?query='+$('#query').val(), function (data) {$('#result').val(''); $('#result').html(data);});")
 
         div#result

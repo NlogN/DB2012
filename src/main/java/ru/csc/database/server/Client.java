@@ -75,7 +75,7 @@ public class Client {
     final static Pattern p6 = Pattern.compile("^(stopsh)[1-3]{1}$");
 
     public static boolean isCorrect(final String command) {
-        return p1.matcher(command).matches() || p2.matcher(command).matches() || p3.matcher(command).matches() || 
-                p4.matcher(command).matches() || p5.matcher(command).matches() || p6.matcher(command).matches();
+        return command.length()!=0 && (p1.matcher(command).matches() || p2.matcher(command).matches() || p3.matcher(command).matches() ||
+                p4.matcher(command).matches() || p5.matcher(command).matches() || p6.matcher(command).matches());
     }
 }

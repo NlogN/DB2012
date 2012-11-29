@@ -22,7 +22,6 @@ import java.util.List;
  */
 public class Master extends Server {
     private HttpServer server;
-  //  private HttpClient client;
     private int port;
 
 
@@ -30,7 +29,6 @@ public class Master extends Server {
         super();
         this.port = port;
         this.server = HttpServer.create(new InetSocketAddress(port), 10);
-    //    this.client = new DefaultHttpClient();
         server.createContext("/", new MyHandler());
         server.start();
         System.out.println("master on port " + port + " started");
@@ -45,7 +43,6 @@ public class Master extends Server {
     class MyHandler extends BaseHttpHandler {
 
         protected void perform(final String value, PrintWriter out) throws IOException {
-            //System.out.println("mcom " + value);
             int k = value.indexOf("=");
             if (k != -1) {
                 String command = value.substring(k + 1);
