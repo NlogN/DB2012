@@ -33,13 +33,16 @@ public class InterfaceServlet {
         }
     }
 
+    private StringWriter sw = new StringWriter();
+    private PrintWriter writer = new PrintWriter(sw);
+
     @GET
     @Path("search")
     @Produces(MediaType.TEXT_HTML)
     public String getSearchResult(@QueryParam("query") final String wordForSearch) throws NoSuchAlgorithmException, IOException, ClassNotFoundException {
-        StringWriter sw = new StringWriter();
-        PrintWriter writer = new PrintWriter(sw);
+
         Client.perform(wordForSearch, writer);
+
         Reader reader = new StringReader(sw.toString());
         BufferedReader bufferedReader = new BufferedReader(reader);
 
@@ -98,5 +101,4 @@ public class InterfaceServlet {
 //        }
 //        return sb.toString();
 //    }
-
 }
